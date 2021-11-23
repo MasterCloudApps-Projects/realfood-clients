@@ -1,0 +1,12 @@
+version: "3"
+services:
+  sqldbclients:
+    image: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=realfood-clients
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
