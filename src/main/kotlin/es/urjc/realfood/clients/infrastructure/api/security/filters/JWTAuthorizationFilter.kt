@@ -1,6 +1,6 @@
-package es.urjc.realfood.clients.api.security.filters
+package es.urjc.realfood.clients.infrastructure.api.security.filters
 
-import es.urjc.realfood.clients.api.security.TOKEN_BEARER_PREFIX
+import es.urjc.realfood.clients.infrastructure.api.security.TOKEN_BEARER_PREFIX
 import io.jsonwebtoken.Jwts
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.AuthenticationManager

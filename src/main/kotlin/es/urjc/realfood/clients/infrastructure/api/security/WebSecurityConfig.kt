@@ -1,7 +1,7 @@
-package es.urjc.realfood.clients.api.security
+package es.urjc.realfood.clients.infrastructure.api.security
 
-import es.urjc.realfood.clients.api.security.filters.JWTAuthenticationFilter
-import es.urjc.realfood.clients.api.security.filters.JWTAuthorizationFilter
+import es.urjc.realfood.clients.infrastructure.api.security.filters.JWTAuthenticationFilter
+import es.urjc.realfood.clients.infrastructure.api.security.filters.JWTAuthorizationFilter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

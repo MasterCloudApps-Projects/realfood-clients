@@ -1,6 +1,7 @@
 version: "3"
 services:
   sqldbclients:
+    container_name: sqldbclients
     image: postgres
     environment:
       - POSTGRES_USER=root

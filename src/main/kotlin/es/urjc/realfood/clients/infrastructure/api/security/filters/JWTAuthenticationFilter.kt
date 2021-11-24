@@ -1,10 +1,10 @@
-package es.urjc.realfood.clients.api.security.filters
+package es.urjc.realfood.clients.infrastructure.api.security.filters
 
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import com.fasterxml.jackson.databind.ObjectMapper
-import es.urjc.realfood.clients.api.security.ISSUER_INFO
-import es.urjc.realfood.clients.api.security.TOKEN_BEARER_PREFIX
-import es.urjc.realfood.clients.api.security.TOKEN_EXPIRATION_TIME
+import es.urjc.realfood.clients.infrastructure.api.security.ISSUER_INFO
+import es.urjc.realfood.clients.infrastructure.api.security.TOKEN_BEARER_PREFIX
+import es.urjc.realfood.clients.infrastructure.api.security.TOKEN_EXPIRATION_TIME
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.authentication.AuthenticationManager
