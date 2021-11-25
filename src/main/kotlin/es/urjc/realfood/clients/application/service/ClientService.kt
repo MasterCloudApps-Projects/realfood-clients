@@ -1,9 +1,10 @@
 package es.urjc.realfood.clients.application.service
 
 import es.urjc.realfood.clients.application.repository.ClientRepository
+import es.urjc.realfood.clients.application.request.ClientCredentialsRequest
 import es.urjc.realfood.clients.application.request.NewClientRequest
+import es.urjc.realfood.clients.application.response.ClientCredentialsResponse
 import es.urjc.realfood.clients.application.response.ClientDetailResponse
-import es.urjc.realfood.clients.application.response.NewClientResponse
 import es.urjc.realfood.clients.domain.Client
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
 import org.springframework.stereotype.Service
@@ -27,7 +28,14 @@ class ClientService(
         return mapToClientDetailResponse(client)
     }
 
-    fun save(newClientRequest: NewClientRequest): NewClientResponse {
+    fun delete(id: String) {
+        val client = clientRepository
+                .findById(id)
+                .orElseThrow { ClientNotFoundException() }
+        clientRepository.delete(client)
+    }
+
+    fun register(newClientRequest: NewClientRequest): ClientCredentialsResponse {
         // mapear a objeto
         // llamar al cliente de registro - status pending
         // guardar en postgress
@@ -36,11 +44,8 @@ class ClientService(
         TODO("Implementar")
     }
 
-    fun delete(id: String) {
-        val client = clientRepository
-                .findById(id)
-                .orElseThrow { ClientNotFoundException() }
-        clientRepository.delete(client)
+    fun login(clientCredentialsRequest: ClientCredentialsRequest): ClientCredentialsResponse {
+        TODO("Implementar")
     }
 
     private fun mapToClientDetailResponse(client: Client): ClientDetailResponse = ClientDetailResponse(

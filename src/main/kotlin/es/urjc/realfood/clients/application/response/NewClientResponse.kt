@@ -1,6 +1,0 @@
-package es.urjc.realfood.clients.application.response
-
-data class NewClientResponse(
-        val id: String
-) {
-}
