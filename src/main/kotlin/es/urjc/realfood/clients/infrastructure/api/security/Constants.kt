@@ -1,4 +1,4 @@
-package es.urjc.realfood.clients.api.security
+package es.urjc.realfood.clients.infrastructure.api.security
 
 import java.time.Duration
 

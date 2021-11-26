@@ -1,4 +1,4 @@
-package es.urjc.realfood.clients.api.security
+package es.urjc.realfood.clients.infrastructure.api.security
 
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

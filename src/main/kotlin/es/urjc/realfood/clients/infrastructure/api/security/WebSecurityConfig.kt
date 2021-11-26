@@ -1,10 +1,11 @@
-package es.urjc.realfood.clients.api.security
+package es.urjc.realfood.clients.infrastructure.api.security
 
-import es.urjc.realfood.clients.api.security.filters.JWTAuthenticationFilter
-import es.urjc.realfood.clients.api.security.filters.JWTAuthorizationFilter
+import es.urjc.realfood.clients.infrastructure.api.security.filters.JWTAuthenticationFilter
+import es.urjc.realfood.clients.infrastructure.api.security.filters.JWTAuthorizationFilter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -35,7 +36,9 @@ class WebSecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .cors().and().csrf().disable()
             .authorizeRequests()
+            .antMatchers(HttpMethod.POST,"/api/clients").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
+            .antMatchers("/v3/api-docs/**").permitAll()
             .antMatchers("/actuator/health").permitAll()
             .anyRequest().authenticated().and()
             .addFilter(JWTAuthenticationFilter(authenticationManager(), tokenSecret))
