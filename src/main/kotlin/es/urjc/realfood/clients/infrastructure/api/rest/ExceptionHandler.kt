@@ -5,25 +5,31 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import javax.validation.ConstraintViolationException
-
 
 @RestControllerAdvice
 class ExceptionHandler {
 
-    @ExceptionHandler(ClientNotFoundException::class)
-    fun resourceNotFoundException(ex: ConstraintViolationException): ResponseEntity<Error?>? {
+    @ExceptionHandler(Exception::class)
+    fun handle(ex: Exception): ResponseEntity<Error> {
+        val statusCode = statusCodeByException[ex::class] ?: HttpStatus.INTERNAL_SERVER_ERROR
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(Error.from(ex))
+                .status(statusCode)
+                .body(Error.from(ex, statusCode))
     }
 
-    data class Error(val reason: String?) {
+    data class Error(val reason: String?, val code: Int) {
         companion object {
-            fun from(ex: Exception): Error {
-                return Error(ex.message)
+            fun from(ex: Exception, code: HttpStatus): Error {
+                return Error(ex.message, code.value())
             }
         }
+    }
+
+    companion object {
+        val statusCodeByException = mapOf(
+                IllegalArgumentException::class to HttpStatus.BAD_REQUEST,
+                ClientNotFoundException::class to  HttpStatus.NOT_FOUND,
+        )
     }
 
 }

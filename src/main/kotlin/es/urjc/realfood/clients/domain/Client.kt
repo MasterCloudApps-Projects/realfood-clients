@@ -1,27 +1,18 @@
 package es.urjc.realfood.clients.domain
 
 import java.util.*
+import javax.persistence.Embedded
+import javax.persistence.EmbeddedId
 import javax.persistence.Entity
-import javax.persistence.Id
 
 @Entity
 class Client(
-        val name: String = "default",
-        val lastName: String = "default",
-        val userId: String = "a2f38804-0064-4528-9421-2605a5879933"
+    @Embedded val name: Name,
+    @Embedded val lastName: Name,
+    val userId: String
 ) {
 
-    @Id
-    val id = UUID.randomUUID().toString()
-
-    init {
-        if (name.isNullOrBlank())
-            throw IllegalArgumentException("Name cannot be empty")
-
-        if (lastName.isNullOrBlank())
-            throw IllegalArgumentException("Last name cannot be empty")
-
-        UUID.fromString(userId)
-    }
+    @EmbeddedId
+    val id = ClientId(UUID.randomUUID().toString())
 
 }
