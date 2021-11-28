@@ -1,18 +1,18 @@
 package es.urjc.realfood.clients.domain
 
-import java.util.*
-import javax.persistence.Embedded
-import javax.persistence.EmbeddedId
-import javax.persistence.Entity
+import javax.persistence.*
 
 @Entity
 class Client(
-    @Embedded val name: Name,
-    @Embedded val lastName: Name,
-    val userId: String
-) {
-
     @EmbeddedId
-    val id = ClientId(UUID.randomUUID().toString())
+    @AttributeOverride(name = "value", column = Column(name = "id"))
+    val id: ClientId,
 
-}
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "name"))
+    val name: Name,
+
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "last_name"))
+    val lastName: LastName
+)

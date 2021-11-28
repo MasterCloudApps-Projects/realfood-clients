@@ -13,7 +13,7 @@ import java.util.*
 class FakeAuthService : AuthService {
 
     override fun invoke(registerRequest: RegisterRequest): RegisterResponse {
-        val userId = UUID.fromString(registerRequest.email).toString()
+        val userId = UUID.nameUUIDFromBytes(registerRequest.email.toByteArray()).toString()
         return RegisterResponse(
                 token = generateNewToken(registerRequest, userId),
                 userId = userId
