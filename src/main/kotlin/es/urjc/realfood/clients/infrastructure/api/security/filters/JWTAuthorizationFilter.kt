@@ -64,7 +64,7 @@ class JWTAuthorizationFilter(
                 .parseClaimsJws(jwt.replace(TOKEN_BEARER_PREFIX, ""))
                 .body
         } catch (ex: Exception) {
-            log.error("Error parsing JWT '$jwt'")
+            log.error("Error parsing JWT: ${ex.message}")
             null
         }
     }
