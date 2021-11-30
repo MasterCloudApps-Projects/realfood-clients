@@ -16,11 +16,10 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
-
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-    @Value("\${jwt.token}") private val tokenSecret: String,
+    @Value("\${JWT_SECRET}") private val tokenSecret: String,
     private val userService: SpringUserService
 ) : WebSecurityConfigurerAdapter() {
 
@@ -36,7 +35,7 @@ class WebSecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .cors().and().csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST,"/api/clients").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/v3/api-docs/**").permitAll()
             .antMatchers("/actuator/health").permitAll()
