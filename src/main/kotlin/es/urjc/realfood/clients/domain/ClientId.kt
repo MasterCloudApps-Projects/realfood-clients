@@ -10,4 +10,9 @@ class ClientId(private val value: String) : Serializable {
     init {
         UUID.fromString(value)
     }
+
+    override fun toString(): String {
+        return value
+    }
+
 }

@@ -9,4 +9,9 @@ class LastName(private val value: String) {
         if (value.isNullOrBlank())
             throw IllegalArgumentException("Last name cannot be empty")
     }
+
+    override fun toString(): String {
+        return value
+    }
+
 }
