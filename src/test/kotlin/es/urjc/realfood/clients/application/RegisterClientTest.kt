@@ -2,6 +2,8 @@ package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.AuthService
+import es.urjc.realfood.clients.domain.services.RegisterRequest
+import es.urjc.realfood.clients.domain.services.RegisterResponse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
@@ -28,6 +30,39 @@ class RegisterClientTest {
         registerClient = RegisterClient(
             authService = authService,
             clientRepository = clientRepository
+        )
+    }
+
+    protected fun validRegisterClientRequest(): RegisterClientRequest {
+        return RegisterClientRequest(
+            name = "Cristofer",
+            lastName = "Lopez",
+            email = "cristofer@email.com",
+            password = "1234"
+        )
+    }
+
+    protected fun invalidNameRegisterClientRequest(): RegisterClientRequest {
+        return RegisterClientRequest(
+            name = "",
+            lastName = "Lopez",
+            email = "cristofer@email.com",
+            password = "1234"
+        )
+    }
+
+    protected fun validRegisterRequest(): RegisterRequest {
+        return RegisterRequest(
+            email = "cristofer@email.com",
+            password = "1234",
+            role = "user"
+        )
+    }
+
+    protected fun validRegisterResponse(): RegisterResponse {
+        return RegisterResponse(
+            token = "token",
+            userId = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
         )
     }
 
