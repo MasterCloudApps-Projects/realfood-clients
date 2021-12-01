@@ -3,8 +3,10 @@ package es.urjc.realfood.clients.application
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
+@Transactional
 class FindByIdClient(
     private val clientRepository: ClientRepository
 ) {

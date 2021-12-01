@@ -9,8 +9,10 @@ import es.urjc.realfood.clients.domain.services.AuthService
 import es.urjc.realfood.clients.domain.services.AuthService.Companion.CLIENT_ROLE
 import es.urjc.realfood.clients.domain.services.RegisterRequest
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
+@Transactional
 class RegisterClient(
     private val authService: AuthService,
     private val clientRepository: ClientRepository
