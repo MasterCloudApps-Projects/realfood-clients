@@ -1,0 +1,51 @@
+package es.urjc.realfood.clients.application
+
+import es.urjc.realfood.clients.domain.Client
+import es.urjc.realfood.clients.domain.ClientId
+import es.urjc.realfood.clients.domain.LastName
+import es.urjc.realfood.clients.domain.Name
+import es.urjc.realfood.clients.domain.repository.ClientRepository
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
+import org.springframework.boot.test.context.SpringBootTest
+
+@SpringBootTest(
+    classes = [
+        ClientRepository::class
+    ]
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+abstract class FindByIdClientTest {
+
+    lateinit var clientRepository: ClientRepository
+    lateinit var findByIdClient: FindByIdClient
+
+    @BeforeAll
+    fun init() {
+        clientRepository = Mockito.mock(ClientRepository::class.java)
+
+        findByIdClient = FindByIdClient(
+            clientRepository = clientRepository
+        )
+    }
+
+    protected fun validClient(): Client {
+        return Client(
+            id = ClientId("89a135b8-98dc-4e57-a22f-b5f99c6b1a99"),
+            name = Name("Cristofer"),
+            lastName = LastName("Lopez")
+        )
+    }
+
+    protected fun validClientId(): ClientId {
+        return ClientId("89a135b8-98dc-4e57-a22f-b5f99c6b1a99")
+    }
+
+    protected fun validFindByIdClientRequest(): FindByIdClientRequest {
+        return FindByIdClientRequest(
+            id = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
+        )
+    }
+
+}

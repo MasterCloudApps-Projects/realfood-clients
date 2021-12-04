@@ -8,19 +8,31 @@ import javax.transaction.Transactional
 
 @Service
 @Transactional
-class DeleteClient(
+class FindByIdClient(
     private val clientRepository: ClientRepository
 ) {
 
-    operator fun invoke(request: DeleteClientRequest) {
+    operator fun invoke(request: FindByIdClientRequest): FindByIdClientResponse {
         val clientId = ClientId(request.id)
         val client = clientRepository
             .findById(clientId) ?: throw ClientNotFoundException("Client not found")
-        clientRepository.delete(client)
+        return FindByIdClientResponse(
+            id = client.id.toString(),
+            name = client.name.toString(),
+            lastName = client.lastName.toString(),
+            email = ""
+        )
     }
 
 }
 
-data class DeleteClientRequest(
+data class FindByIdClientRequest(
     val id: String
+)
+
+data class FindByIdClientResponse(
+    val id: String,
+    val name: String,
+    val lastName: String,
+    val email: String
 )

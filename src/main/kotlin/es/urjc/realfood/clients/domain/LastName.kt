@@ -1,14 +1,13 @@
 package es.urjc.realfood.clients.domain
 
-import java.io.Serializable
-import java.util.*
 import javax.persistence.Embeddable
 
 @Embeddable
-class ClientId(private val value: String) : Serializable {
+class LastName(private val value: String) {
 
     init {
-        UUID.fromString(value)
+        if (value.isNullOrBlank())
+            throw IllegalArgumentException("Last name cannot be empty")
     }
 
     override fun toString(): String {
@@ -19,7 +18,7 @@ class ClientId(private val value: String) : Serializable {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ClientId
+        other as LastName
 
         if (value != other.value) return false
 
