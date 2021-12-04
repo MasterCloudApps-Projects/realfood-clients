@@ -12,6 +12,7 @@ class RegisterClientUnitaryTest : RegisterClientTest() {
     fun `given valid request when register then return jwt`() {
         `when`(authService(validRegisterRequest()))
             .thenReturn(validRegisterResponse())
+
         val response = registerClient(validRegisterClientRequest())
 
         assertEquals("token", response.token)
@@ -22,11 +23,24 @@ class RegisterClientUnitaryTest : RegisterClientTest() {
     fun `given invalid name in request when register then throw illegal arg exception`() {
         `when`(authService(validRegisterRequest()))
             .thenReturn(validRegisterResponse())
+
         val exc = assertThrows(IllegalArgumentException::class.java) {
             registerClient(invalidNameRegisterClientRequest())
         }
 
         assertEquals("Name cannot be empty", exc.message)
+    }
+
+    @Test
+    fun `given invalid last name in request when register then throw illegal arg exception`() {
+        `when`(authService(validRegisterRequest()))
+            .thenReturn(validRegisterResponse())
+
+        val exc = assertThrows(IllegalArgumentException::class.java) {
+            registerClient(invalidLastNameRegisterClientRequest())
+        }
+
+        assertEquals("Last name cannot be empty", exc.message)
     }
 
 }

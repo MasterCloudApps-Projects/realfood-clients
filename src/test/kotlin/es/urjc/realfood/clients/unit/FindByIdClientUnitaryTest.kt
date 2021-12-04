@@ -1,7 +1,9 @@
 package es.urjc.realfood.clients.unit
 
+import es.urjc.realfood.clients.application.FindByIdClientRequest
 import es.urjc.realfood.clients.application.FindByIdClientTest
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
@@ -29,6 +31,15 @@ class FindByIdClientUnitaryTest : FindByIdClientTest() {
         }
 
         assertEquals("Client not found", exc.message)
+    }
+
+    @Test
+    fun `given invalid id when ask for user then return illegal argument exception`() {
+        val exc = assertThrows(IllegalArgumentException::class.java) {
+            findByIdClient(FindByIdClientRequest("INVALID-ID"))
+        }
+
+        Assertions.assertTrue(exc.message!!.contains("Invalid UUID"))
     }
 
 }

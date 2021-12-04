@@ -51,6 +51,33 @@ abstract class RegisterClientTest {
         )
     }
 
+    protected fun invalidLastNameRegisterClientRequest(): RegisterClientRequest {
+        return RegisterClientRequest(
+            name = "Cristofer",
+            lastName = "",
+            email = "cristofer@email.com",
+            password = "1234"
+        )
+    }
+
+    protected fun invalidEmailRegisterClientRequest(): RegisterClientRequest {
+        return RegisterClientRequest(
+            name = "Cristofer",
+            lastName = "Lpez",
+            email = "INVALID-EMAIL",
+            password = "1234"
+        )
+    }
+
+    protected fun invalidPasswordRegisterClientRequest(): RegisterClientRequest {
+        return RegisterClientRequest(
+            name = "Cristofer",
+            lastName = "Lpez",
+            email = "cristofer@email.com",
+            password = ""
+        )
+    }
+
     protected fun validRegisterRequest(): RegisterRequest {
         return RegisterRequest(
             email = "cristofer@email.com",
