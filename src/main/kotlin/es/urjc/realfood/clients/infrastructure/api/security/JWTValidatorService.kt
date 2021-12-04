@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class JWTService(
+class JWTValidatorService(
     @Value("\${JWT_SECRET}") private val tokenSecret: String
 ) {
 
