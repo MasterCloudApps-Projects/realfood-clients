@@ -10,7 +10,7 @@ import org.mockito.Mockito.*
 class DeleteClientUnitaryTest : DeleteClientTest() {
 
     @Test
-    fun givenValidIdWhenDeleteUserThenOk() {
+    fun `given valid id when delete user then ok`() {
         val client = validClient()
 
         `when`(clientRepository.findById(validClientId()))
@@ -22,7 +22,7 @@ class DeleteClientUnitaryTest : DeleteClientTest() {
     }
 
     @Test
-    fun givenUnknownIdWhenDeleteUserThenReturnIllegalArgumentException() {
+    fun `given unknown id when delete user then return illegal argument exception`() {
         `when`(clientRepository.findById(validClientId()))
             .thenReturn(null)
 

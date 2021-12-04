@@ -9,7 +9,7 @@ import org.mockito.Mockito.`when`
 class RegisterClientUnitaryTest : RegisterClientTest() {
 
     @Test
-    fun givenValidRequestWhenRegisterThenReturnJwt() {
+    fun `given valid request when register then return jwt`() {
         `when`(authService(validRegisterRequest()))
             .thenReturn(validRegisterResponse())
         val response = registerClient(validRegisterClientRequest())
@@ -19,7 +19,7 @@ class RegisterClientUnitaryTest : RegisterClientTest() {
     }
 
     @Test
-    fun givenInvalidNameInRequestWhenRegisterThenThrowExc() {
+    fun `given invalid name in request when register then throw illegal arg exception`() {
         `when`(authService(validRegisterRequest()))
             .thenReturn(validRegisterResponse())
         val exc = assertThrows(IllegalArgumentException::class.java) {

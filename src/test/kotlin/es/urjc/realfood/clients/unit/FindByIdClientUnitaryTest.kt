@@ -10,7 +10,7 @@ import org.mockito.Mockito.`when`
 class FindByIdClientUnitaryTest : FindByIdClientTest() {
 
     @Test
-    fun givenValidIdWhenAskForUserThenReturnUser() {
+    fun `given valid id when ask for user then return user`() {
         `when`(clientRepository.findById(validClientId()))
             .thenReturn(validClient())
 
@@ -20,7 +20,7 @@ class FindByIdClientUnitaryTest : FindByIdClientTest() {
     }
 
     @Test
-    fun givenUnknownIdWhenAskForUserThenReturnIllegalArgumentException() {
+    fun `given unknown id when ask for user then return illegal argument exception`() {
         `when`(clientRepository.findById(validClientId()))
             .thenReturn(null)
 
