@@ -22,4 +22,8 @@ class ClientRestController(
         deleteClient(DeleteClientRequest(subject))
     }
 
+    override fun login(loginRequest: LoginClientRequest): LoginClientResponse {
+        TODO("Not yet implemented")
+    }
+
 }
