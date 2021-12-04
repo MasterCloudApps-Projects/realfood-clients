@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
     ]
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DeleteClientTest {
+abstract class DeleteClientTest {
 
     lateinit var clientRepository: ClientRepository
     lateinit var deleteClient: DeleteClient
@@ -30,11 +30,21 @@ class DeleteClientTest {
         )
     }
 
-    protected fun validClientReturned(): Client {
+    protected fun validClient(): Client {
         return Client(
             id = ClientId("89a135b8-98dc-4e57-a22f-b5f99c6b1a99"),
             name = Name("Cristofer"),
             lastName = LastName("Lopez")
+        )
+    }
+
+    protected fun validClientId(): ClientId {
+        return ClientId("89a135b8-98dc-4e57-a22f-b5f99c6b1a99")
+    }
+
+    protected fun validDeleteClientRequest(): DeleteClientRequest {
+        return DeleteClientRequest(
+            id = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
         )
     }
 

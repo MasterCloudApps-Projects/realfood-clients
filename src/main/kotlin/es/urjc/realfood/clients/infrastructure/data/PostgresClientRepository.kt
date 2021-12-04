@@ -10,7 +10,7 @@ class PostgresClientRepository(private val jpaRepository: ClientJpaRepository) :
 
     override fun findAll(): List<Client> = jpaRepository.findAll()
 
-    override fun findById(id: String): Client? = jpaRepository.findById(ClientId(id)).orElse(null)
+    override fun findById(id: ClientId): Client? = jpaRepository.findById(id).orElse(null)
 
     override fun save(client: Client): Client = jpaRepository.save(client)
 

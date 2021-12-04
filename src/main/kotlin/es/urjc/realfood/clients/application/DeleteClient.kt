@@ -1,5 +1,6 @@
 package es.urjc.realfood.clients.application
 
+import es.urjc.realfood.clients.domain.ClientId
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import org.springframework.stereotype.Service
@@ -12,8 +13,9 @@ class DeleteClient(
 ) {
 
     operator fun invoke(request: DeleteClientRequest) {
+        val clientId = ClientId(request.id)
         val client = clientRepository
-            .findById(request.id) ?: throw ClientNotFoundException("Client not found")
+            .findById(clientId) ?: throw ClientNotFoundException("Client not found")
         clientRepository.delete(client)
     }
 

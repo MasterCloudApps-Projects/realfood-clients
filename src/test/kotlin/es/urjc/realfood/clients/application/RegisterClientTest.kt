@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
     ]
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RegisterClientTest {
+abstract class RegisterClientTest {
 
     lateinit var authService: AuthService
     lateinit var clientRepository: ClientRepository
