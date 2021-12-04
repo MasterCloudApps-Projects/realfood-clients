@@ -18,7 +18,7 @@ class PostgresClientRepository(private val jpaRepository: ClientJpaRepository) :
 
     override fun delete(client: Client) = jpaRepository.delete(client)
 
-    override fun findByEmailAndPassword(email: Email, password: Password) =
-        jpaRepository.findByEmailAndPassword(email, password)
+    override fun findByEmailAndPassword(email: Email, password: Password): Client? =
+        jpaRepository.findByEmailAndPassword(email, password).orElse(null)
 
 }

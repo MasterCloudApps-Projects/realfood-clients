@@ -15,6 +15,6 @@ interface ClientRepository {
 
     fun delete(client: Client)
 
-    fun findByEmailAndPassword(email: Email, password: Password)
+    fun findByEmailAndPassword(email: Email, password: Password): Client?
 
 }
