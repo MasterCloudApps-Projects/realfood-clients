@@ -1,22 +1,21 @@
 package es.urjc.realfood.clients.domain
 
-import java.lang.IllegalArgumentException
 import javax.persistence.Embeddable
 
 @Embeddable
-class Email(private val value: String) {
+class Password(private val value: String
+) {
 
     init {
-        if(isNotValidEmail(value))
-            throw IllegalArgumentException("Email '$value' is not a valid email")
+        if (value.isNullOrBlank())
+            throw IllegalArgumentException("Password cannot be empty")
     }
 
-    private fun isNotValidEmail(value: String): Boolean = !EMAIL_PATTERN_REGEX.matches(value)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Email
+        other as Password
 
         if (value != other.value) return false
 
@@ -29,10 +28,6 @@ class Email(private val value: String) {
 
     override fun toString(): String {
         return value
-    }
-
-    companion object {
-        val EMAIL_PATTERN_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})".toRegex()
     }
 
 }

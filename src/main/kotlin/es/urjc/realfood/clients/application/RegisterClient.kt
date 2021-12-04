@@ -1,13 +1,11 @@
 package es.urjc.realfood.clients.application
 
-import es.urjc.realfood.clients.domain.Client
-import es.urjc.realfood.clients.domain.ClientId
-import es.urjc.realfood.clients.domain.LastName
-import es.urjc.realfood.clients.domain.Name
+import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.AuthService
 import es.urjc.realfood.clients.domain.services.AuthService.Companion.CLIENT_ROLE
 import es.urjc.realfood.clients.domain.services.RegisterRequest
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -15,7 +13,8 @@ import javax.transaction.Transactional
 @Transactional
 class RegisterClient(
     private val authService: AuthService,
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
     operator fun invoke(request: RegisterClientRequest): RegisterClientResponse {
@@ -30,7 +29,9 @@ class RegisterClient(
         val newClient = Client(
             id = ClientId(response.userId),
             name = Name(request.name),
-            lastName = LastName(request.lastName)
+            lastName = LastName(request.lastName),
+            email = Email(request.email),
+            password = Password(bCryptPasswordEncoder.encode(request.password))
         )
 
         clientRepository.save(newClient)

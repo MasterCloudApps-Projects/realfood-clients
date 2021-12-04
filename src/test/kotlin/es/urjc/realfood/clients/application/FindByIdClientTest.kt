@@ -1,9 +1,6 @@
 package es.urjc.realfood.clients.application
 
-import es.urjc.realfood.clients.domain.Client
-import es.urjc.realfood.clients.domain.ClientId
-import es.urjc.realfood.clients.domain.LastName
-import es.urjc.realfood.clients.domain.Name
+import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
@@ -34,7 +31,9 @@ abstract class FindByIdClientTest {
         return Client(
             id = ClientId("89a135b8-98dc-4e57-a22f-b5f99c6b1a99"),
             name = Name("Cristofer"),
-            lastName = LastName("Lopez")
+            lastName = LastName("Lopez"),
+            email = Email("cristofer@cristofer.es"),
+            password = Password("1234")
         )
     }
 

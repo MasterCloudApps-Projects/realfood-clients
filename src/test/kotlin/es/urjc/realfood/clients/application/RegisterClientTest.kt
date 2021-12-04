@@ -6,8 +6,9 @@ import es.urjc.realfood.clients.domain.services.RegisterRequest
 import es.urjc.realfood.clients.domain.services.RegisterResponse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @SpringBootTest(
     classes = [
@@ -20,16 +21,19 @@ abstract class RegisterClientTest {
 
     lateinit var authService: AuthService
     lateinit var clientRepository: ClientRepository
+    lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
     lateinit var registerClient: RegisterClient
 
     @BeforeAll
     fun init() {
-        authService = Mockito.mock(AuthService::class.java)
-        clientRepository = Mockito.mock(ClientRepository::class.java)
+        authService = mock(AuthService::class.java)
+        clientRepository = mock(ClientRepository::class.java)
+        bCryptPasswordEncoder = mock(BCryptPasswordEncoder::class.java)
 
         registerClient = RegisterClient(
             authService = authService,
-            clientRepository = clientRepository
+            clientRepository = clientRepository,
+            bCryptPasswordEncoder = bCryptPasswordEncoder
         )
     }
 

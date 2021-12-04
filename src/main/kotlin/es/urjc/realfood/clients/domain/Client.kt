@@ -14,7 +14,15 @@ class Client(
 
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "last_name"))
-    val lastName: LastName
+    val lastName: LastName,
+
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "email"))
+    val email: Email,
+
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "password"))
+    val password: Password
 ){
 
     override fun equals(other: Any?): Boolean {
