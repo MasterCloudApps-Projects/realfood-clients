@@ -11,11 +11,7 @@ class LoginClientUnitaryTest : LoginClientTest() {
 
     @Test
     fun `given valid request when login then return jwt`() {
-        `when`(
-            clientRepository.findByEmail(
-                email = validEmail()
-            )
-        ).thenReturn(validClient())
+        `when`(clientRepository.findByEmail(validEmail())).thenReturn(validClient())
         `when`(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(true)
         `when`(jwtService.generateJwt(anyString())).thenReturn("token")
 
@@ -31,16 +27,12 @@ class LoginClientUnitaryTest : LoginClientTest() {
             loginClient(invalidEmailLoginClientRequest())
         }
 
-        assertEquals("Email 'cristofer' is not valid email", exc.message)
+        assertEquals("Email 'cristofer' is not a valid email", exc.message)
     }
 
     @Test
     fun `given invalid password request when login then return illegal argument exception`() {
-        `when`(
-            clientRepository.findByEmail(
-                email = validEmail()
-            )
-        ).thenReturn(validClient())
+        `when`(clientRepository.findByEmail(validEmail())).thenReturn(validClient())
         `when`(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(false)
 
         val exc = Assertions.assertThrows(IllegalArgumentException::class.java) {
