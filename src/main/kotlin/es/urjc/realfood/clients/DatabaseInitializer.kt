@@ -2,11 +2,13 @@ package es.urjc.realfood.clients
 
 import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.ClientRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
 class DatabaseInitializer(
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
     init {
@@ -16,7 +18,7 @@ class DatabaseInitializer(
                 name = Name("Cristofer"),
                 lastName = LastName("Lopez"),
                 email = Email("cristofer@cristofer.es"),
-                password = Password("1234")
+                password = Password(bCryptPasswordEncoder.encode("1234"))
             )
         )
         clientRepository.save(
@@ -25,7 +27,7 @@ class DatabaseInitializer(
                 name = Name("juan"),
                 lastName = LastName("Avila"),
                 email = Email("juan@juan.es"),
-                password = Password("1234")
+                password = Password(bCryptPasswordEncoder.encode("1234"))
             )
         )
     }
