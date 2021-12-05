@@ -12,7 +12,7 @@ import java.util.*
 
 @Component
 class FakeAuthService(
-    @Value("\${JWT_SECRET}") private val tokenSecret: String
+    @Value("\${jwt.secret}") private val tokenSecret: String
 ) : AuthService {
 
     override fun invoke(registerRequest: RegisterRequest): RegisterResponse {

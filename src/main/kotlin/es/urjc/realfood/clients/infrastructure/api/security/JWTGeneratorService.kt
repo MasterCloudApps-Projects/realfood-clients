@@ -11,8 +11,8 @@ import java.util.*
 
 @Service
 class JWTGeneratorService(
-    @Value("\${JWT_SECRET}") private val tokenSecret: String,
-    @Value("\${JWT_ISSUER}") private val issuer: String
+    @Value("\${jwt.secret}") private val tokenSecret: String,
+    @Value("\${jwt.issuer}") private val issuer: String
 ) : JWTService {
 
     override fun generateJwt(userId: String): String {

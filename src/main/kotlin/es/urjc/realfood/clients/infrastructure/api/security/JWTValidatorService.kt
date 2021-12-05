@@ -8,7 +8,7 @@ import java.util.*
 
 @Service
 class JWTValidatorService(
-    @Value("\${JWT_SECRET}") private val tokenSecret: String
+    @Value("\${jwt.secret}") private val tokenSecret: String
 ) {
 
     fun getSubjectFromHeaders(headers: Map<String, String>): String {
