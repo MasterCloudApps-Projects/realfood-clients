@@ -4,11 +4,11 @@ import es.urjc.realfood.clients.application.*
 import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
 import org.springframework.web.bind.annotation.RestController
 
-
 @RestController
 class ClientRestController(
     private val findByIdClient: FindByIdClient,
     private val deleteClient: DeleteClient,
+    private val loginClient: LoginClient,
     private val jwtService: JWTValidatorService
 ) : ClientRestApi {
 
@@ -23,7 +23,7 @@ class ClientRestController(
     }
 
     override fun login(loginRequest: LoginClientRequest): LoginClientResponse {
-        TODO("Not yet implemented")
+        return loginClient(loginRequest)
     }
 
 }

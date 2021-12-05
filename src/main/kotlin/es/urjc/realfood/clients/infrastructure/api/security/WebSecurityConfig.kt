@@ -36,6 +36,7 @@ class WebSecurityConfig(
             .cors().and().csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/login").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/v3/api-docs/**").permitAll()
             .antMatchers("/actuator/health").permitAll()

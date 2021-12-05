@@ -1,5 +1,7 @@
 package es.urjc.realfood.clients.application
 
+import es.urjc.realfood.clients.domain.Email
+import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.JWTService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -14,8 +16,21 @@ class LoginClient(
     private val jwtService: JWTService
 ) {
 
-    operator fun invoke(loginClientRequest: LoginClientRequest): LoginClientResponse {
-        TODO("Not implemented jet")
+    operator fun invoke(request: LoginClientRequest): LoginClientResponse {
+        val client = clientRepository
+            .findByEmail(
+                email = Email(request.email)
+            ) ?: throw ClientNotFoundException("Client not found")
+
+        if (!bCryptPasswordEncoder.matches(request.password, client.password.toString()))
+            throw IllegalArgumentException("Invalid password")
+
+        val userId = client.id.toString()
+
+        return LoginClientResponse(
+            token = jwtService.generateJwt(userId),
+            clientId = userId
+        )
     }
 
 }
