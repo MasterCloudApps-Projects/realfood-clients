@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.anyString
 
 class RegisterClientUnitaryTest : RegisterClientTest() {
 
@@ -12,6 +13,7 @@ class RegisterClientUnitaryTest : RegisterClientTest() {
     fun `given valid request when register then return jwt`() {
         `when`(authService(validRegisterRequest()))
             .thenReturn(validRegisterResponse())
+        `when`(bCryptPasswordEncoder.encode(anyString())).thenReturn("1234")
 
         val response = registerClient(validRegisterClientRequest())
 
