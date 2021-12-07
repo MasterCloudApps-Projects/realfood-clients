@@ -19,7 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-    @Value("\${JWT_SECRET}") private val tokenSecret: String,
+    @Value("\${jwt.secret}") private val tokenSecret: String,
     private val userService: SpringUserService
 ) : WebSecurityConfigurerAdapter() {
 
@@ -36,6 +36,7 @@ class WebSecurityConfig(
             .cors().and().csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/login").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/v3/api-docs/**").permitAll()
             .antMatchers("/actuator/health").permitAll()

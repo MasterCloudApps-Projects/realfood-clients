@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class JWTService(
-    @Value("\${JWT_SECRET}") private val tokenSecret: String
+class JWTValidatorService(
+    @Value("\${jwt.secret}") private val tokenSecret: String
 ) {
 
     fun getSubjectFromHeaders(headers: Map<String, String>): String {

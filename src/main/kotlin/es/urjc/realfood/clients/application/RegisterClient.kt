@@ -1,43 +1,55 @@
 package es.urjc.realfood.clients.application
 
-import es.urjc.realfood.clients.domain.Client
-import es.urjc.realfood.clients.domain.ClientId
-import es.urjc.realfood.clients.domain.LastName
-import es.urjc.realfood.clients.domain.Name
+import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.AuthService
-import es.urjc.realfood.clients.domain.services.AuthService.Companion.CLIENT_ROLE
+import es.urjc.realfood.clients.domain.services.JWTService
 import es.urjc.realfood.clients.domain.services.RegisterRequest
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.transaction.Transactional
 
 @Service
 @Transactional
 class RegisterClient(
+    private val clientRepository: ClientRepository,
+    private val bCryptPasswordEncoder: BCryptPasswordEncoder,
     private val authService: AuthService,
-    private val clientRepository: ClientRepository
+    private val jwtService: JWTService
 ) {
 
     operator fun invoke(request: RegisterClientRequest): RegisterClientResponse {
+        val validEmail = Email(request.email)
+        val clientId = UUID.nameUUIDFromBytes(validEmail.toString().toByteArray()).toString()
+
         val response = authService(
             RegisterRequest(
-                email = request.email,
-                password = request.password,
-                role = CLIENT_ROLE
+                userId = clientId
             )
         )
 
+        if (response.alreadyRegistered)
+            throw IllegalArgumentException("User already registered as restaurant")
+
+        val client = clientRepository
+            .findById(ClientId(clientId))
+        if (client != null)
+            throw IllegalArgumentException("User already registered as client")
+
         val newClient = Client(
-            id = ClientId(response.userId),
+            id = ClientId(clientId),
             name = Name(request.name),
-            lastName = LastName(request.lastName)
+            lastName = LastName(request.lastName),
+            email = validEmail,
+            password = Password(bCryptPasswordEncoder.encode(request.password))
         )
 
         clientRepository.save(newClient)
 
         return RegisterClientResponse(
-            token = response.token,
-            clientId = response.userId
+            token = jwtService.generateJwt(clientId),
+            clientId = clientId
         )
     }
 

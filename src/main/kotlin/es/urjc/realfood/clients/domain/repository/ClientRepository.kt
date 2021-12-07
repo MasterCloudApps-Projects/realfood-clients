@@ -2,6 +2,7 @@ package es.urjc.realfood.clients.domain.repository
 
 import es.urjc.realfood.clients.domain.Client
 import es.urjc.realfood.clients.domain.ClientId
+import es.urjc.realfood.clients.domain.Email
 
 interface ClientRepository {
 
@@ -12,5 +13,7 @@ interface ClientRepository {
     fun save(client: Client): Client
 
     fun delete(client: Client)
+
+    fun findByEmail(email: Email): Client?
 
 }

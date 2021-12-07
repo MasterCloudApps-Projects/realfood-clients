@@ -20,7 +20,7 @@ class FindByIdClient(
             id = client.id.toString(),
             name = client.name.toString(),
             lastName = client.lastName.toString(),
-            email = ""
+            email = client.email.toString()
         )
     }
 
