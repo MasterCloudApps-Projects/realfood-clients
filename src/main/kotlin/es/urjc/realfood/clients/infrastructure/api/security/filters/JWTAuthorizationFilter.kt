@@ -1,5 +1,6 @@
 package es.urjc.realfood.clients.infrastructure.api.security.filters
 
+import es.urjc.realfood.clients.domain.services.JWTService.Companion.CLIENT_ROLE
 import es.urjc.realfood.clients.infrastructure.api.security.TOKEN_BEARER_PREFIX
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -43,6 +44,10 @@ class JWTAuthorizationFilter(
             val claims = getClaims(token)
             if (claims == null || claims.isEmpty()) {
                 log.error("JWT '$token' cannot be decoded")
+                return null
+            }
+            if(CLIENT_ROLE != claims["role"]){
+                log.error("You aren't a client")
                 return null
             }
             val valid = LocalDateTime.now()

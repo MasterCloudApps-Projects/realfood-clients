@@ -4,6 +4,8 @@ import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.*
+import javax.annotation.PostConstruct
 
 @Component
 class DatabaseInitializer(
@@ -11,10 +13,11 @@ class DatabaseInitializer(
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
 
-    init {
+    @PostConstruct
+    fun setUp() {
         clientRepository.save(
             Client(
-                id = ClientId("22bac1ee-ebd9-45b7-b280-9023f353a285"),
+                id = ClientId(UUID.nameUUIDFromBytes("cristofer@cristofer.es".toByteArray()).toString()),
                 name = Name("Cristofer"),
                 lastName = LastName("Lopez"),
                 email = Email("cristofer@cristofer.es"),
@@ -23,7 +26,7 @@ class DatabaseInitializer(
         )
         clientRepository.save(
             Client(
-                id = ClientId("89044589-62e9-4ad4-b44f-ba11bbec8a93"),
+                id = ClientId(UUID.nameUUIDFromBytes("juan@juan.es".toByteArray()).toString()),
                 name = Name("juan"),
                 lastName = LastName("Avila"),
                 email = Email("juan@juan.es"),

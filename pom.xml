@@ -17,7 +17,6 @@
         <java.version>11</java.version>
         <kotlin.version>1.6.0</kotlin.version>
         <testcontainers.version>1.16.0</testcontainers.version>
-        <ff4j.version>1.8.11</ff4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -107,16 +106,6 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ff4j</groupId>
-            <artifactId>ff4j-spring-boot-starter</artifactId>
-            <version>${ff4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ff4j</groupId>
-            <artifactId>ff4j-web</artifactId>
-            <version>${ff4j.version}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
