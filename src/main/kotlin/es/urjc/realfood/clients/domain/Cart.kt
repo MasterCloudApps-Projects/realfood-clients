@@ -10,7 +10,7 @@ class Cart(
 ) {
 
     @ElementCollection(fetch = FetchType.EAGER)
-    val items = mutableListOf<MenuItemId>()
+    val items = mutableListOf<CartItem>()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
