@@ -2,6 +2,7 @@ package es.urjc.realfood.clients.integration
 
 import es.urjc.realfood.clients.api.rest.ClientRestControllerTest
 import es.urjc.realfood.clients.application.FindByIdClientResponse
+import es.urjc.realfood.clients.application.LoginClientResponse
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
@@ -92,6 +93,59 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .assertThat()
             .statusCode(404)
             .body("reason", Matchers.equalTo("Client not found"))
+    }
+
+
+    @Test
+    fun `given login endpoint when login then return status ok`() {
+        `when`(loginClient(validLoginClientRequest()))
+            .thenReturn(validLoginClientResponse())
+
+        RestAssured.given()
+            .request()
+            .body(validLoginClientRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .post("/api/login")
+            .then()
+            .assertThat()
+            .statusCode(200)
+            .body("clientId", Matchers.equalTo(validUserId()))
+            .extract().`as`(LoginClientResponse::class.java)
+    }
+
+    @Test
+    fun `given login endpoint when client not found exception then return 404 status code`() {
+        `when`(loginClient(validLoginClientRequest()))
+            .thenThrow(ClientNotFoundException("Client not found"))
+
+        RestAssured.given()
+            .request()
+            .body(validLoginClientRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .post("/api/login")
+            .then()
+            .assertThat()
+            .statusCode(404)
+            .body("reason", Matchers.equalTo("Client not found"))
+    }
+
+    @Test
+    fun `given login endpoint when illegal argument exception then return 400 status code`() {
+        `when`(loginClient(validLoginClientRequest()))
+            .thenThrow(IllegalArgumentException("Illegal"))
+
+        RestAssured.given()
+            .request()
+            .body(validLoginClientRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .post("/api/login")
+            .then()
+            .assertThat()
+            .statusCode(400)
+            .body("reason", Matchers.equalTo("Illegal"))
     }
 
 }
