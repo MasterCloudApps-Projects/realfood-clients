@@ -18,7 +18,6 @@ class RegisterRestControllerIntegrationTest : RegisterRestControllerTest() {
         given()
             .request()
             .body(validRegisterClientRequestJson())
-            .header("Authorization", "Bearer ")
             .contentType(ContentType.JSON)
             .`when`()
             .post("/api/clients")
