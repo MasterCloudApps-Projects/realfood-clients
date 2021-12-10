@@ -56,4 +56,42 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body("reason", Matchers.equalTo("Client not found"))
     }
 
+
+    @Test
+    fun `given unsubscribe endpoint when delete me then return status ok`() {
+        `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
+            .thenReturn(validUserId())
+
+        RestAssured.given()
+            .request()
+            .header("Authorization", "Bearer ${validJwt()}")
+            .body(validDeleteClientRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .delete("/api/unsubscribe")
+            .then()
+            .assertThat()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `given unsubscribe endpoint when client not found exception then return 404 status code`() {
+        `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
+            .thenReturn(validUserId())
+        `when`(deleteClient(validDeleteClientRequest()))
+            .thenThrow(ClientNotFoundException("Client not found"))
+
+        RestAssured.given()
+            .request()
+            .header("Authorization", "Bearer ${validJwt()}")
+            .body(validDeleteClientRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .delete("/api/unsubscribe")
+            .then()
+            .assertThat()
+            .statusCode(404)
+            .body("reason", Matchers.equalTo("Client not found"))
+    }
+
 }
