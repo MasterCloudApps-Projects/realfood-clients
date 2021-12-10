@@ -39,14 +39,14 @@ class DatabaseInitializer(
 
         cartRepository.save(
             Cart(
-                id = CartId(UUID.randomUUID().toString()),
+                id = CartId(UUID.nameUUIDFromBytes("cristofer".toByteArray()).toString()),
                 client = cristofer
             )
         )
 
         cartRepository.save(
             Cart(
-                id = CartId(UUID.randomUUID().toString()),
+                id = CartId(UUID.nameUUIDFromBytes("juan".toByteArray()).toString()),
                 client = juan
             )
         )
