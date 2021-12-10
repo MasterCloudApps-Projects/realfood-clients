@@ -35,8 +35,8 @@ class WebSecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .cors().and().csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+            .antMatchers(HttpMethod.POST, REGISTER_ENDPOINT).permitAll()
+            .antMatchers(HttpMethod.POST, LOGIN_ENDPOINT).permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/v3/api-docs/**").permitAll()
             .antMatchers("/actuator/health").permitAll()
@@ -51,4 +51,10 @@ class WebSecurityConfig(
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder())
     }
+
+    companion object {
+        const val LOGIN_ENDPOINT = "/api/sign-in"
+        const val REGISTER_ENDPOINT = "/api/clients"
+    }
+
 }
