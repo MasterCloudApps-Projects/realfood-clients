@@ -1,7 +1,7 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.ClientId
-import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
+import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -15,7 +15,7 @@ class FindByIdClient(
     operator fun invoke(request: FindByIdClientRequest): FindByIdClientResponse {
         val clientId = ClientId(request.id)
         val client = clientRepository
-            .findById(clientId) ?: throw ClientNotFoundException("Client not found")
+            .findById(clientId) ?: throw EntityNotFoundException("Client not found")
         return FindByIdClientResponse(
             id = client.id.toString(),
             name = client.name.toString(),
