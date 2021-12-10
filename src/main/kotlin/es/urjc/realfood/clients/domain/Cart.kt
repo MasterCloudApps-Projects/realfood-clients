@@ -13,7 +13,7 @@ class Cart(
 ) {
 
     @ElementCollection(fetch = FetchType.EAGER)
-    val items = mutableListOf<CartItem>()
+    val items = mutableMapOf<String, CartItem>()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
