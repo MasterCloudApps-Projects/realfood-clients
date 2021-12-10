@@ -3,8 +3,10 @@ package es.urjc.realfood.clients.infrastructure.api.rest
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.net.http.HttpTimeoutException
 
 @RestControllerAdvice
 class ExceptionHandler {
@@ -13,8 +15,8 @@ class ExceptionHandler {
     fun handle(ex: Exception): ResponseEntity<Error> {
         val statusCode = statusCodeByException[ex::class] ?: HttpStatus.INTERNAL_SERVER_ERROR
         return ResponseEntity
-                .status(statusCode)
-                .body(Error.from(ex, statusCode))
+            .status(statusCode)
+            .body(Error.from(ex, statusCode))
     }
 
     data class Error(val reason: String?, val code: Int) {
@@ -27,8 +29,9 @@ class ExceptionHandler {
 
     companion object {
         val statusCodeByException = mapOf(
-                IllegalArgumentException::class to HttpStatus.BAD_REQUEST,
-                ClientNotFoundException::class to  HttpStatus.NOT_FOUND,
+            IllegalArgumentException::class to HttpStatus.BAD_REQUEST,
+            ClientNotFoundException::class to HttpStatus.NOT_FOUND,
+            HttpMessageNotReadableException::class to HttpStatus.BAD_REQUEST
         )
     }
 
