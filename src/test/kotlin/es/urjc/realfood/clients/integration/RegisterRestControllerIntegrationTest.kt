@@ -11,7 +11,7 @@ import org.mockito.Mockito.`when`
 class RegisterRestControllerIntegrationTest : RegisterRestControllerTest() {
 
     @Test
-    fun `given valid json request when try to register then return status ok`() {
+    fun `given register endpoint when register then return status ok`() {
         `when`(registerClient(validRegisterClientRequest()))
             .thenReturn(validRegisterClientResponse())
 
