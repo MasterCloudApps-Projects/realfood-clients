@@ -1,6 +1,6 @@
 package es.urjc.realfood.clients.integration
 
-import es.urjc.realfood.clients.api.rest.ClientRestControllerTest
+import es.urjc.realfood.clients.infrastructure.api.rest.ClientRestControllerTest
 import es.urjc.realfood.clients.application.FindByIdClientResponse
 import es.urjc.realfood.clients.application.LoginClientResponse
 import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
