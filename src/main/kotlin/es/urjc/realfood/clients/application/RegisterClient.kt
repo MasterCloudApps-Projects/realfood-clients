@@ -39,20 +39,22 @@ class RegisterClient(
         if (client != null)
             throw IllegalArgumentException("User already registered as client")
 
-        val newClientCart = Cart(CartId(UUID.randomUUID().toString()))
-
-        cartRepository.save(newClientCart)
-
         val newClient = Client(
             id = ClientId(clientId),
             name = Name(request.name),
             lastName = LastName(request.lastName),
             email = validEmail,
-            password = Password(bCryptPasswordEncoder.encode(request.password)),
-            cart = newClientCart
+            password = Password(bCryptPasswordEncoder.encode(request.password))
         )
 
         clientRepository.save(newClient)
+
+        cartRepository.save(
+            Cart(
+                id = CartId(UUID.randomUUID().toString()),
+                client = newClient
+            )
+        )
 
         return RegisterClientResponse(
             token = jwtService.generateJwt(clientId),

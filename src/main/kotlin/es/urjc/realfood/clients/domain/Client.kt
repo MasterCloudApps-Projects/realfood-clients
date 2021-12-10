@@ -22,10 +22,7 @@ class Client(
 
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "password"))
-    val password: Password,
-
-    @OneToOne
-    val cart: Cart
+    val password: Password
 ) {
 
     override fun equals(other: Any?): Boolean {

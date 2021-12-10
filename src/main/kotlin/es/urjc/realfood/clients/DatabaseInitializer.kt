@@ -17,31 +17,37 @@ class DatabaseInitializer(
 
     @PostConstruct
     fun setUp() {
-
-        val cristoCart = Cart(CartId(UUID.randomUUID().toString()))
-        val juanCart = Cart(CartId(UUID.randomUUID().toString()))
-
-        cartRepository.save(cristoCart)
-        cartRepository.save(juanCart)
-
-        clientRepository.save(
+        val cristofer = clientRepository.save(
             Client(
                 id = ClientId(UUID.nameUUIDFromBytes("cristofer@cristofer.es".toByteArray()).toString()),
                 name = Name("Cristofer"),
                 lastName = LastName("Lopez"),
                 email = Email("cristofer@cristofer.es"),
-                password = Password(bCryptPasswordEncoder.encode("1234")),
-                cart = cristoCart
+                password = Password(bCryptPasswordEncoder.encode("1234"))
             )
         )
-        clientRepository.save(
+
+        val juan = clientRepository.save(
             Client(
                 id = ClientId(UUID.nameUUIDFromBytes("juan@juan.es".toByteArray()).toString()),
                 name = Name("juan"),
                 lastName = LastName("Avila"),
                 email = Email("juan@juan.es"),
-                password = Password(bCryptPasswordEncoder.encode("1234")),
-                cart = juanCart
+                password = Password(bCryptPasswordEncoder.encode("1234"))
+            )
+        )
+
+        cartRepository.save(
+            Cart(
+                id = CartId(UUID.randomUUID().toString()),
+                client = cristofer
+            )
+        )
+
+        cartRepository.save(
+            Cart(
+                id = CartId(UUID.randomUUID().toString()),
+                client = juan
             )
         )
     }

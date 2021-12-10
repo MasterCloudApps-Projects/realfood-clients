@@ -6,7 +6,10 @@ import javax.persistence.*
 class Cart(
     @EmbeddedId
     @AttributeOverride(name = "value", column = Column(name = "id"))
-    val id: CartId
+    val id: CartId,
+
+    @OneToOne
+    val client: Client
 ) {
 
     @ElementCollection(fetch = FetchType.EAGER)
