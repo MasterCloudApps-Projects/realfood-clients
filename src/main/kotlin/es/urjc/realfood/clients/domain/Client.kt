@@ -22,8 +22,11 @@ class Client(
 
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "password"))
-    val password: Password
-){
+    val password: Password,
+
+    @OneToOne
+    val cart: Cart
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

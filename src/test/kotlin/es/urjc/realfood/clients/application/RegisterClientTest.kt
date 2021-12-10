@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.*
+import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.AuthService
 import es.urjc.realfood.clients.domain.services.JWTService
@@ -16,13 +17,15 @@ import java.util.*
 @SpringBootTest(
     classes = [
         AuthService::class,
-        ClientRepository::class
+        ClientRepository::class,
+        CartRepository::class
     ]
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class RegisterClientTest {
 
     lateinit var clientRepository: ClientRepository
+    lateinit var cartRepository: CartRepository
     lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
     lateinit var authService: AuthService
     lateinit var jwtService: JWTService
@@ -31,12 +34,14 @@ abstract class RegisterClientTest {
     @BeforeAll
     fun init() {
         clientRepository = mock(ClientRepository::class.java)
+        cartRepository = mock(CartRepository::class.java)
         bCryptPasswordEncoder = mock(BCryptPasswordEncoder::class.java)
         authService = mock(AuthService::class.java)
         jwtService = mock(JWTService::class.java)
 
         registerClient = RegisterClient(
             clientRepository = clientRepository,
+            cartRepository = cartRepository,
             bCryptPasswordEncoder = bCryptPasswordEncoder,
             authService = authService,
             jwtService = jwtService
@@ -65,8 +70,13 @@ abstract class RegisterClientTest {
             name = Name("Cristofer"),
             lastName = LastName("Lopez"),
             email = Email("cristofer@cristofer.es"),
-            password = Password("1234")
+            password = Password("1234"),
+            cart = validCart()
         )
+    }
+
+    private fun validCart(): Cart {
+        return Cart(CartId(UUID.randomUUID().toString()))
     }
 
     protected fun invalidRegisterResponse(): RegisterResponse {

@@ -6,11 +6,11 @@ import javax.persistence.*
 class Cart(
     @EmbeddedId
     @AttributeOverride(name = "value", column = Column(name = "id"))
-    private val id: CartId
+    val id: CartId
 ) {
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private val items = mutableListOf<MenuItemId>()
+    val items = mutableListOf<MenuItemId>()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

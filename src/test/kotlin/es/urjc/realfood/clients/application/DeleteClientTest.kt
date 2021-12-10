@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import org.springframework.boot.test.context.SpringBootTest
+import java.util.*
 
 @SpringBootTest(
     classes = [
@@ -33,8 +34,13 @@ abstract class DeleteClientTest {
             name = Name("Cristofer"),
             lastName = LastName("Lopez"),
             email = Email("cristofer@cristofer.es"),
-            password = Password("1234")
+            password = Password("1234"),
+            cart = validCart()
         )
+    }
+
+    private fun validCart(): Cart {
+        return Cart(CartId(UUID.randomUUID().toString()))
     }
 
     protected fun validClientId(): ClientId {

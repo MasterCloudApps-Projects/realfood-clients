@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.*
+import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.AuthService
 import es.urjc.realfood.clients.domain.services.JWTService
@@ -14,6 +15,7 @@ import javax.transaction.Transactional
 @Transactional
 class RegisterClient(
     private val clientRepository: ClientRepository,
+    private val cartRepository: CartRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
     private val authService: AuthService,
     private val jwtService: JWTService
@@ -37,12 +39,17 @@ class RegisterClient(
         if (client != null)
             throw IllegalArgumentException("User already registered as client")
 
+        val newClientCart = Cart(CartId(UUID.randomUUID().toString()))
+
+        cartRepository.save(newClientCart)
+
         val newClient = Client(
             id = ClientId(clientId),
             name = Name(request.name),
             lastName = LastName(request.lastName),
             email = validEmail,
-            password = Password(bCryptPasswordEncoder.encode(request.password))
+            password = Password(bCryptPasswordEncoder.encode(request.password)),
+            cart = newClientCart
         )
 
         clientRepository.save(newClient)
