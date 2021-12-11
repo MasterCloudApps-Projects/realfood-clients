@@ -2,6 +2,7 @@ package es.urjc.realfood.clients.infrastructure.api.rest
 
 import es.urjc.realfood.clients.application.*
 import es.urjc.realfood.clients.application.AddItemToCartRequest
+import es.urjc.realfood.clients.application.DeleteItemFromCartRequest
 import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
 import org.springframework.web.bind.annotation.RestController
 
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController
 class CartRestController(
     private val findByClientIdCart: FindByClientIdCart,
     private val addItemToCart: AddItemToCart,
+    private val clearCart: ClearCart,
+    private val deleteItemFromCart: DeleteItemFromCart,
     private val jwtValidatorService: JWTValidatorService
 ) : CartRestApi {
 
@@ -18,7 +21,8 @@ class CartRestController(
     }
 
     override fun clearCart(headers: Map<String, String>) {
-        TODO("Not yet implemented")
+        val subject = jwtValidatorService.getSubjectFromHeaders(headers)
+        clearCart(ClearCartRequest(subject))
     }
 
     override fun addItemToCart(
@@ -35,8 +39,17 @@ class CartRestController(
         )
     }
 
-    override fun deleteItemFromCart(headers: Map<String, String>) {
-        TODO("Not yet implemented")
+    override fun deleteItemFromCart(
+        headers: Map<String, String>,
+        deleteItemFromCartRequest: es.urjc.realfood.clients.infrastructure.api.rest.DeleteItemFromCartRequest
+    ) {
+        val subject = jwtValidatorService.getSubjectFromHeaders(headers)
+        deleteItemFromCart(
+            DeleteItemFromCartRequest(
+                clientId = subject,
+                itemId = deleteItemFromCartRequest.itemId
+            )
+        )
     }
 
     override fun checkoutCart(headers: Map<String, String>) {

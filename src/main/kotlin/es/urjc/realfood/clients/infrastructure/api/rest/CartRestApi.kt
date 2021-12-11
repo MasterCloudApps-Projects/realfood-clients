@@ -23,7 +23,8 @@ interface CartRestApi {
 
     @DeleteMapping("/clients/me/cart/item")
     fun deleteItemFromCart(
-        @RequestHeader headers: Map<String, String>
+        @RequestHeader headers: Map<String, String>,
+        @RequestBody deleteItemFromCartRequest: DeleteItemFromCartRequest
     )
 
     @PostMapping("/clients/me/cart/checkout")
@@ -34,4 +35,8 @@ interface CartRestApi {
 data class AddItemToCartRequest(
     val itemId: String,
     val quantity: Int
+)
+
+data class DeleteItemFromCartRequest(
+    val itemId: String
 )
