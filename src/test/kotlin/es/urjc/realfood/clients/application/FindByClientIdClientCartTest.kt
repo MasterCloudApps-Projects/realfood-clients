@@ -53,17 +53,8 @@ class FindByClientIdClientCartTest {
         )
     }
 
-    protected fun validCartItem(): CartItem {
-        return CartItem(
-            itemId = validItemId(),
-            quantity = 5
-        )
-    }
-
     protected fun validCartId(): CartId = CartId("89a135b8-98dc-4e57-a22f-b5f99c6b1a99")
 
     protected fun validClientId(): ClientId = ClientId("89a135b8-98dc-4e57-a22f-b5f99c6b1a00")
-
-    protected fun validItemId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a00"
 
 }
