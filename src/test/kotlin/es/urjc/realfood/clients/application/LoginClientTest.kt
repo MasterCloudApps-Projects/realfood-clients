@@ -8,7 +8,6 @@ import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.mock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.util.*
 
 @SpringBootTest(
     classes = [
