@@ -1,9 +1,9 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.ClientId
+import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import org.springframework.stereotype.Service
-import javax.persistence.EntityNotFoundException
 import javax.transaction.Transactional
 
 @Service
