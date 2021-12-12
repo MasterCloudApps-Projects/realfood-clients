@@ -36,6 +36,9 @@ abstract class CartRestControllerTest {
     lateinit var deleteItemFromCart: DeleteItemFromCart
 
     @MockBean
+    lateinit var checkoutCart: CheckoutCart
+
+    @MockBean
     lateinit var jwtValidatorService: JWTValidatorService
 
     lateinit var cartRestController: CartRestController
@@ -50,6 +53,7 @@ abstract class CartRestControllerTest {
             addItemToCart = addItemToCart,
             clearCart = clearCart,
             deleteItemFromCart = deleteItemFromCart,
+            checkoutCart = checkoutCart,
             jwtValidatorService = jwtValidatorService
         )
 
@@ -115,11 +119,29 @@ abstract class CartRestControllerTest {
         )
     }
 
+    protected fun validCheckoutCartRequestJson(): String {
+        return objectMapper.writeValueAsString(validCheckoutCartRequest())
+    }
+
+    protected fun validCheckoutCartRequest(): CheckoutCartRequest {
+        return CheckoutCartRequest(
+            clientId = validUserId()
+        )
+    }
+
+    protected fun validCheckoutCartResponse(): CheckoutCartResponse {
+        return CheckoutCartResponse(
+            orderId = validOrderId()
+        )
+    }
+
     protected fun validCartId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
 
     protected fun validItemId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a00"
 
     protected fun validUserId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a11"
+
+    protected fun validOrderId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a22"
 
     protected fun validJwt(): String = jwtGeneratorService.generateJwt(validUserId())
 

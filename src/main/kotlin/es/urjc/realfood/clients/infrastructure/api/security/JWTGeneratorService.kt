@@ -20,7 +20,7 @@ class JWTGeneratorService(
             .setIssuedAt(Date.from(Instant.now()))
             .setSubject(userId)
             .setIssuer(issuer)
-            .setExpiration(Date.from(Instant.now().plusSeconds(60)))
+            .setExpiration(Date.from(Instant.now().plusSeconds(1800)))
             .addClaims(mapOf("role" to CLIENT_ROLE))
             .signWith(
                 SignatureAlgorithm.HS256,

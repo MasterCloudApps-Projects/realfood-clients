@@ -12,6 +12,7 @@ class CartRestController(
     private val addItemToCart: AddItemToCart,
     private val clearCart: ClearCart,
     private val deleteItemFromCart: DeleteItemFromCart,
+    private val checkoutCart: CheckoutCart,
     private val jwtValidatorService: JWTValidatorService
 ) : CartRestApi {
 
@@ -52,8 +53,9 @@ class CartRestController(
         )
     }
 
-    override fun checkoutCart(headers: Map<String, String>) {
-        TODO("Not yet implemented")
+    override fun checkoutCart(headers: Map<String, String>): CheckoutCartResponse {
+        val subject = jwtValidatorService.getSubjectFromHeaders(headers)
+        return checkoutCart(CheckoutCartRequest(subject))
     }
 
 }

@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.integration
 
 import es.urjc.realfood.clients.application.AddItemToCartResponse
+import es.urjc.realfood.clients.application.CheckoutCartResponse
 import es.urjc.realfood.clients.application.FindByClientIdCartResponse
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.infrastructure.api.rest.CartRestControllerTest
@@ -173,6 +174,47 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
             .contentType(ContentType.JSON)
             .`when`()
             .delete("/api/clients/me/cart/item")
+            .then()
+            .assertThat()
+            .statusCode(404)
+            .body("reason", Matchers.equalTo("NOT FOUND"))
+    }
+
+    @Test
+    fun `given checkout cart endpoint when checkout then return status ok`() {
+        `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
+            .thenReturn(validUserId())
+        `when`(checkoutCart(validCheckoutCartRequest()))
+            .thenReturn(validCheckoutCartResponse())
+
+        RestAssured.given()
+            .request()
+            .header("Authorization", "Bearer ${validJwt()}")
+            .body(validCheckoutCartRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .post("/api/clients/me/cart/checkout")
+            .then()
+            .assertThat()
+            .statusCode(200)
+            .body("orderId", Matchers.equalTo(validOrderId()))
+            .extract().`as`(CheckoutCartResponse::class.java)
+    }
+
+    @Test
+    fun `given checkout cart endpoint when nonexistent user then return 404 status code`() {
+        `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
+            .thenReturn(validUserId())
+        `when`(checkoutCart(validCheckoutCartRequest()))
+            .thenThrow(EntityNotFoundException("NOT FOUND"))
+
+        RestAssured.given()
+            .request()
+            .header("Authorization", "Bearer ${validJwt()}")
+            .body(validCheckoutCartRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .post("/api/clients/me/cart/checkout")
             .then()
             .assertThat()
             .statusCode(404)
