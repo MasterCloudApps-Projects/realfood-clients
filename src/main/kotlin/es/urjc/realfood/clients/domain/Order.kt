@@ -1,16 +1,14 @@
 package es.urjc.realfood.clients.domain
 
-import javax.persistence.AttributeOverride
-import javax.persistence.Column
-import javax.persistence.EmbeddedId
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 class Order(
     @EmbeddedId
     @AttributeOverride(name = "value", column = Column(name = "id"))
     val id: OrderId,
-    
-    val status: String,
+
+    @Enumerated(EnumType.STRING)
+    val status: Status,
 
     @ManyToOne
     val client: Client
