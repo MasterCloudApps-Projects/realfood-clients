@@ -60,7 +60,7 @@ class AddItemToCartUnitaryTest : AddItemToCartTest() {
         `when`(cartRepository.findByClientId(validClientId()))
             .thenReturn(validCart())
         `when`(findByIdProductService(validFindByIdProductServiceRequest()))
-            .thenReturn(invalidFindByIdProductServiceResponse())
+            .thenReturn(invalidFindByIdProductServiceResponse404())
 
         val exc = Assertions.assertThrows(EntityNotFoundException::class.java) {
             addItemToCart(validAddItemToCartRequest())

@@ -11,6 +11,5 @@ data class FindByIdProductServiceRequest(
 )
 
 data class FindByIdProductServiceResponse(
-    val id: String,
-    val price: Int
+    val status: Int
 )

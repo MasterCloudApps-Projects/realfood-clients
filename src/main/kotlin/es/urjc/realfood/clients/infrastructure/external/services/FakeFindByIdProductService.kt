@@ -10,8 +10,7 @@ class FakeFindByIdProductService : FindByIdProductService {
 
     override fun invoke(request: FindByIdProductServiceRequest): FindByIdProductServiceResponse {
         return FindByIdProductServiceResponse(
-            id = request.id,
-            price = 1
+            status = 200
         )
     }
 

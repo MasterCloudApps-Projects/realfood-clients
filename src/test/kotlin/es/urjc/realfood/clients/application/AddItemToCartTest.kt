@@ -65,15 +65,13 @@ class AddItemToCartTest {
 
     protected fun validFindByIdProductServiceResponse(): FindByIdProductServiceResponse {
         return FindByIdProductServiceResponse(
-            id = validItemId(),
-            price = 10
+            status = 200
         )
     }
 
-    protected fun invalidFindByIdProductServiceResponse(): FindByIdProductServiceResponse {
+    protected fun invalidFindByIdProductServiceResponse404(): FindByIdProductServiceResponse {
         return FindByIdProductServiceResponse(
-            id = "",
-            price = 10
+            status = 404
         )
     }
 

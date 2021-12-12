@@ -3,6 +3,7 @@ package es.urjc.realfood.clients.application
 import es.urjc.realfood.clients.domain.CartItem
 import es.urjc.realfood.clients.domain.ClientId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
+import es.urjc.realfood.clients.domain.exception.ProductException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.services.FindByIdProductService
 import es.urjc.realfood.clients.domain.services.FindByIdProductServiceRequest
@@ -31,7 +32,10 @@ class AddItemToCart(
             )
         )
 
-        if (response.id.isBlank())
+        if (response.status == 500)
+            throw ProductException("Error from Restaurants API")
+
+        if (response.status != 200)
             throw EntityNotFoundException("Product not found")
 
         val cartItem = cart.items[request.itemId]
