@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.*
+import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.AuthService
 import es.urjc.realfood.clients.domain.services.JWTService
@@ -14,6 +15,7 @@ import javax.transaction.Transactional
 @Transactional
 class RegisterClient(
     private val clientRepository: ClientRepository,
+    private val cartRepository: CartRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
     private val authService: AuthService,
     private val jwtService: JWTService
@@ -46,6 +48,13 @@ class RegisterClient(
         )
 
         clientRepository.save(newClient)
+
+        cartRepository.save(
+            Cart(
+                id = CartId(UUID.randomUUID().toString()),
+                client = newClient
+            )
+        )
 
         return RegisterClientResponse(
             token = jwtService.generateJwt(clientId),

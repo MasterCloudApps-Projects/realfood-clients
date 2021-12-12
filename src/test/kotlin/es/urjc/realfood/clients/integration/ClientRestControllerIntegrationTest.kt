@@ -1,9 +1,9 @@
 package es.urjc.realfood.clients.integration
 
-import es.urjc.realfood.clients.api.rest.ClientRestControllerTest
+import es.urjc.realfood.clients.infrastructure.api.rest.ClientRestControllerTest
 import es.urjc.realfood.clients.application.FindByIdClientResponse
 import es.urjc.realfood.clients.application.LoginClientResponse
-import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
+import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers
@@ -26,7 +26,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body(validFindByIdClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .get("/api/me")
+            .get("/api/clients/me")
             .then()
             .assertThat()
             .statusCode(200)
@@ -42,7 +42,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
             .thenReturn(validUserId())
         `when`(findByIdClient(validFindByIdClientRequest()))
-            .thenThrow(ClientNotFoundException("Client not found"))
+            .thenThrow(EntityNotFoundException("Client not found"))
 
         RestAssured.given()
             .request()
@@ -50,13 +50,12 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body(validFindByIdClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .get("/api/me")
+            .get("/api/clients/me")
             .then()
             .assertThat()
             .statusCode(404)
             .body("reason", Matchers.equalTo("Client not found"))
     }
-
 
     @Test
     fun `given unsubscribe endpoint when delete me then return status ok`() {
@@ -69,7 +68,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body(validDeleteClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .delete("/api/unsubscribe")
+            .delete("/api/clients/me")
             .then()
             .assertThat()
             .statusCode(200)
@@ -80,7 +79,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
             .thenReturn(validUserId())
         `when`(deleteClient(validDeleteClientRequest()))
-            .thenThrow(ClientNotFoundException("Client not found"))
+            .thenThrow(EntityNotFoundException("Client not found"))
 
         RestAssured.given()
             .request()
@@ -88,7 +87,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body(validDeleteClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .delete("/api/unsubscribe")
+            .delete("/api/clients/me")
             .then()
             .assertThat()
             .statusCode(404)
@@ -106,7 +105,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body(validLoginClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .post("/api/login")
+            .post("/api/sign-in")
             .then()
             .assertThat()
             .statusCode(200)
@@ -117,14 +116,14 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
     @Test
     fun `given login endpoint when client not found exception then return 404 status code`() {
         `when`(loginClient(validLoginClientRequest()))
-            .thenThrow(ClientNotFoundException("Client not found"))
+            .thenThrow(EntityNotFoundException("Client not found"))
 
         RestAssured.given()
             .request()
             .body(validLoginClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .post("/api/login")
+            .post("/api/sign-in")
             .then()
             .assertThat()
             .statusCode(404)
@@ -141,7 +140,7 @@ class ClientRestControllerIntegrationTest : ClientRestControllerTest() {
             .body(validLoginClientRequestJson())
             .contentType(ContentType.JSON)
             .`when`()
-            .post("/api/login")
+            .post("/api/sign-in")
             .then()
             .assertThat()
             .statusCode(400)

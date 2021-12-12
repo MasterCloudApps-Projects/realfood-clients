@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api")
 interface ClientRestApi {
 
-    @GetMapping("/me")
+    @GetMapping("/clients/me")
     fun whoami(@RequestHeader headers: Map<String, String>): FindByIdClientResponse
 
-    @DeleteMapping("/unsubscribe")
+    @DeleteMapping("/clients/me")
     fun unsubscribe(@RequestHeader headers: Map<String, String>)
 
-    @PostMapping("/login")
+    @PostMapping("/sign-in")
     fun login(@RequestBody loginRequest: LoginClientRequest): LoginClientResponse
 
 }

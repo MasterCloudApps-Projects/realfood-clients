@@ -1,8 +1,7 @@
-package es.urjc.realfood.clients.api.rest
+package es.urjc.realfood.clients.infrastructure.api.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import es.urjc.realfood.clients.application.*
-import es.urjc.realfood.clients.infrastructure.api.rest.ClientRestController
 import es.urjc.realfood.clients.infrastructure.api.security.JWTGeneratorService
 import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
 import io.restassured.RestAssured

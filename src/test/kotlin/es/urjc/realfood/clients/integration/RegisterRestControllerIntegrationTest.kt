@@ -1,6 +1,6 @@
 package es.urjc.realfood.clients.integration
 
-import es.urjc.realfood.clients.api.rest.RegisterRestControllerTest
+import es.urjc.realfood.clients.infrastructure.api.rest.RegisterRestControllerTest
 import es.urjc.realfood.clients.application.RegisterClientResponse
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType

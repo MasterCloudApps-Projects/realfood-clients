@@ -2,7 +2,7 @@ package es.urjc.realfood.clients.unit
 
 import es.urjc.realfood.clients.application.DeleteClientRequest
 import es.urjc.realfood.clients.application.DeleteClientTest
-import es.urjc.realfood.clients.domain.exception.ClientNotFoundException
+import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -26,7 +26,7 @@ class DeleteClientUnitaryTest : DeleteClientTest() {
         `when`(clientRepository.findById(validClientId()))
             .thenReturn(null)
 
-        val exc = assertThrows(ClientNotFoundException::class.java) {
+        val exc = assertThrows(EntityNotFoundException::class.java) {
             deleteClient(validDeleteClientRequest())
         }
 

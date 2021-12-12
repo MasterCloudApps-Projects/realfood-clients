@@ -1,10 +1,9 @@
-package es.urjc.realfood.clients.api.rest
+package es.urjc.realfood.clients.infrastructure.api.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import es.urjc.realfood.clients.application.RegisterClient
 import es.urjc.realfood.clients.application.RegisterClientRequest
 import es.urjc.realfood.clients.application.RegisterClientResponse
-import es.urjc.realfood.clients.infrastructure.api.rest.RegisterRestController
 import es.urjc.realfood.clients.infrastructure.api.security.JWTGeneratorService
 import io.restassured.RestAssured
 import io.restassured.module.mockmvc.RestAssuredMockMvc
