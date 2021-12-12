@@ -3,6 +3,7 @@ package es.urjc.realfood.clients.domain
 import javax.persistence.*
 
 @Entity
+@Table(name = "client_orders")
 class Order(
     @EmbeddedId
     @AttributeOverride(name = "value", column = Column(name = "id"))
