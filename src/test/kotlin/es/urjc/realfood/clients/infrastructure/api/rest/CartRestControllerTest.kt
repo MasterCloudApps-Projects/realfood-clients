@@ -68,6 +68,12 @@ abstract class CartRestControllerTest {
         )
     }
 
+    protected fun validClearCartRequest(): ClearCartRequest {
+        return ClearCartRequest(
+            clientId = validUserId()
+        )
+    }
+
     protected fun validCartId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
 
     protected fun validItemId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a00"
