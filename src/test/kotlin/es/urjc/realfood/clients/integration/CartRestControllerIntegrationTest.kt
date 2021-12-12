@@ -142,4 +142,41 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
             .body("reason", Matchers.equalTo("NOT FOUND"))
     }
 
+    @Test
+    fun `given remove item from cart endpoint when remove item then return status ok`() {
+        `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
+            .thenReturn(validUserId())
+
+        RestAssured.given()
+            .request()
+            .header("Authorization", "Bearer ${validJwt()}")
+            .body(validDeleteItemFromCartRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .delete("/api/clients/me/cart/item")
+            .then()
+            .assertThat()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `given remove item from cart endpoint when nonexistent user then return 404 status code`() {
+        `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
+            .thenReturn(validUserId())
+        `when`(deleteItemFromCart(validDeleteItemFromCartRequest()))
+            .thenThrow(EntityNotFoundException("NOT FOUND"))
+
+        RestAssured.given()
+            .request()
+            .header("Authorization", "Bearer ${validJwt()}")
+            .body(validDeleteItemFromCartRequestJson())
+            .contentType(ContentType.JSON)
+            .`when`()
+            .delete("/api/clients/me/cart/item")
+            .then()
+            .assertThat()
+            .statusCode(404)
+            .body("reason", Matchers.equalTo("NOT FOUND"))
+    }
+
 }
