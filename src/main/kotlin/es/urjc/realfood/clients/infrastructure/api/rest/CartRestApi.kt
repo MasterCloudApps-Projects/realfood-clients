@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.infrastructure.api.rest
 
 import es.urjc.realfood.clients.application.AddItemToCartResponse
+import es.urjc.realfood.clients.application.CheckoutCartResponse
 import es.urjc.realfood.clients.application.FindByClientIdCartResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
@@ -28,7 +29,7 @@ interface CartRestApi {
     )
 
     @PostMapping("/clients/me/cart/checkout")
-    fun checkoutCart(@RequestHeader headers: Map<String, String>)
+    fun checkoutCart(@RequestHeader headers: Map<String, String>): CheckoutCartResponse
 
 }
 

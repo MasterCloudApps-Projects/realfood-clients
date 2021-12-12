@@ -36,6 +36,9 @@ abstract class CartRestControllerTest {
     lateinit var deleteItemFromCart: DeleteItemFromCart
 
     @MockBean
+    lateinit var checkoutCart: CheckoutCart
+
+    @MockBean
     lateinit var jwtValidatorService: JWTValidatorService
 
     lateinit var cartRestController: CartRestController
@@ -50,6 +53,7 @@ abstract class CartRestControllerTest {
             addItemToCart = addItemToCart,
             clearCart = clearCart,
             deleteItemFromCart = deleteItemFromCart,
+            checkoutCart = checkoutCart,
             jwtValidatorService = jwtValidatorService
         )
 
