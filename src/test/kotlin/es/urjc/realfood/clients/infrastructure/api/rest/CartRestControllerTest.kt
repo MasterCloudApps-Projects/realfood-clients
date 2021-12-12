@@ -2,6 +2,8 @@ package es.urjc.realfood.clients.infrastructure.api.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import es.urjc.realfood.clients.application.*
+import es.urjc.realfood.clients.application.AddItemToCartRequest
+import es.urjc.realfood.clients.application.DeleteItemFromCartRequest
 import es.urjc.realfood.clients.infrastructure.api.security.JWTGeneratorService
 import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
 import io.restassured.RestAssured
@@ -71,6 +73,45 @@ abstract class CartRestControllerTest {
     protected fun validClearCartRequest(): ClearCartRequest {
         return ClearCartRequest(
             clientId = validUserId()
+        )
+    }
+
+    protected fun validAddItemToCartRequestJson(): String {
+        return objectMapper.writeValueAsString(
+            es.urjc.realfood.clients.infrastructure.api.rest.AddItemToCartRequest(
+                itemId = validItemId(),
+                quantity = 5
+            )
+        )
+    }
+
+    protected fun validAddItemToCartRequest(): AddItemToCartRequest {
+        return AddItemToCartRequest(
+            clientId = validUserId(),
+            itemId = validItemId(),
+            quantity = 5
+        )
+    }
+
+    protected fun validAddItemToCartResponse(): AddItemToCartResponse {
+        return AddItemToCartResponse(
+            itemId = validItemId(),
+            quantity = 5
+        )
+    }
+
+    protected fun validDeleteItemFromCartRequestJson(): String {
+        return objectMapper.writeValueAsString(
+            es.urjc.realfood.clients.infrastructure.api.rest.DeleteItemFromCartRequest(
+                itemId = validItemId()
+            )
+        )
+    }
+
+    protected fun validDeleteItemFromCartRequest(): DeleteItemFromCartRequest {
+        return DeleteItemFromCartRequest(
+            clientId = validUserId(),
+            itemId = validItemId()
         )
     }
 
