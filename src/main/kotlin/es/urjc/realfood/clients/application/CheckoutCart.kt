@@ -11,6 +11,7 @@ import es.urjc.realfood.clients.domain.repository.OrderRepository
 import es.urjc.realfood.clients.domain.services.CheckoutCartService
 import es.urjc.realfood.clients.domain.services.CheckoutServiceRequest
 import org.springframework.stereotype.Service
+import java.lang.IllegalArgumentException
 import javax.transaction.Transactional
 
 @Service
@@ -26,6 +27,9 @@ class CheckoutCart(
 
         val cart = cartRepository.findByClientId(clientId)
             ?: throw EntityNotFoundException("Cart not found")
+
+        if(cart.items.isEmpty())
+            throw IllegalArgumentException("Empty cart!")
 
         val response = checkoutCartService(
             CheckoutServiceRequest(

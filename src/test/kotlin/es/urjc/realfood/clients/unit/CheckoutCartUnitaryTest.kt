@@ -57,4 +57,16 @@ class CheckoutCartUnitaryTest : CheckoutCartTest() {
         assertEquals("Cart not found", exc.message)
     }
 
+    @Test
+    fun `given valid request but empty cart user when checkout user cart then return illegal argument exception`() {
+        `when`(cartRepository.findByClientId(validClientId()))
+            .thenReturn(invalidCart())
+
+        val exc = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            checkoutCart(validCheckoutCartRequest())
+        }
+
+        assertEquals("Empty cart!", exc.message)
+    }
+
 }
