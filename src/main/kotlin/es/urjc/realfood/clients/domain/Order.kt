@@ -2,6 +2,7 @@ package es.urjc.realfood.clients.domain
 
 import javax.persistence.*
 
+@Entity
 class Order(
     @EmbeddedId
     @AttributeOverride(name = "value", column = Column(name = "id"))
