@@ -1,9 +1,7 @@
 package es.urjc.realfood.clients.infrastructure.api.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import es.urjc.realfood.clients.application.FindAllByClientIdOrders
-import es.urjc.realfood.clients.application.FindAllByClientIdOrdersRequest
-import es.urjc.realfood.clients.application.FindAllByClientIdOrdersResponse
+import es.urjc.realfood.clients.application.*
 import es.urjc.realfood.clients.infrastructure.api.security.JWTGeneratorService
 import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
 import io.restassured.RestAssured
@@ -27,6 +25,9 @@ abstract class OrderRestControllerTest {
     lateinit var findAllByClientIdOrders: FindAllByClientIdOrders
 
     @MockBean
+    lateinit var findByIdAndClientIdOrder: FindByIdAndClientIdOrder
+
+    @MockBean
     lateinit var jwtValidatorService: JWTValidatorService
 
     lateinit var orderRestController: OrderRestController
@@ -38,6 +39,7 @@ abstract class OrderRestControllerTest {
     fun setUp() {
         orderRestController = OrderRestController(
             findAllByClientIdOrders = findAllByClientIdOrders,
+            findByIdAndClientIdOrder = findByIdAndClientIdOrder,
             jwtValidatorService = jwtValidatorService
         )
 
@@ -58,7 +60,19 @@ abstract class OrderRestControllerTest {
         )
     }
 
-    protected fun validCartId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
+    protected fun validFindRequest(): FindByIdAndClientIdOrderRequest {
+        return FindByIdAndClientIdOrderRequest(
+            clientId = validUserId(),
+            orderId = validOrderId()
+        )
+    }
+
+    protected fun validFindResponse(): FindByIdAndClientIdOrderResponse {
+        return FindByIdAndClientIdOrderResponse(
+            orderId = validOrderId(),
+            status = "PENDING"
+        )
+    }
 
     protected fun validUserId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a11"
 
