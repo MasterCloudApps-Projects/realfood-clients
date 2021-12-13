@@ -50,11 +50,7 @@ abstract class OrderRestControllerTest {
             clientId = validUserId()
         )
     }
-
-    protected fun validFindAllRequestJson(): String {
-        return objectMapper.writeValueAsString(validFindAllRequest())
-    }
-
+    
     protected fun validFindAllResponse(): FindAllByClientIdOrdersResponse {
         return FindAllByClientIdOrdersResponse(
             clientId = validUserId(),

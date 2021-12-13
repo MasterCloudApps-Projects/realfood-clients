@@ -40,15 +40,6 @@ class FindAllByClientIdOrdersTest {
         )
     }
 
-    protected fun validFindAllByClientIdOrdersResponse(): FindAllByClientIdOrdersResponse {
-        return FindAllByClientIdOrdersResponse(
-            clientId = validClientId().toString(),
-            orders = listOf(
-                OrderDto(validOrderId().toString(), "PENDING")
-            )
-        )
-    }
-
     protected fun validOrders(): List<Order> {
         return listOf(validOrder())
     }
