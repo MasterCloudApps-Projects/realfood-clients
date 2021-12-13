@@ -11,6 +11,9 @@ class PostgresOrderRepository(private val jpaRepository: OrderJpaRepository) : O
 
     override fun findById(id: OrderId): Order? = jpaRepository.findById(id).orElse(null)
 
+    override fun findByIdAndClientId(id: OrderId, clientId: ClientId): Order? =
+        jpaRepository.findByIdAndClientId(id, clientId).orElse(null)
+
     override fun save(order: Order): Order = jpaRepository.save(order)
 
     override fun findAllByClientId(clientId: ClientId): List<Order> = jpaRepository.findAllByClientId(clientId)

@@ -50,7 +50,7 @@ abstract class OrderRestControllerTest {
             clientId = validUserId()
         )
     }
-    
+
     protected fun validFindAllResponse(): FindAllByClientIdOrdersResponse {
         return FindAllByClientIdOrdersResponse(
             clientId = validUserId(),

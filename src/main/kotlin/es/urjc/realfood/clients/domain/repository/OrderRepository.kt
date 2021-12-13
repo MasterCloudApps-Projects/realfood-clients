@@ -8,6 +8,8 @@ interface OrderRepository {
 
     fun findById(id: OrderId): Order?
 
+    fun findByIdAndClientId(id: OrderId, clientId: ClientId): Order?
+
     fun save(order: Order): Order
 
     fun findAllByClientId(clientId: ClientId): List<Order>
