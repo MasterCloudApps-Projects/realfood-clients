@@ -8,7 +8,12 @@ interface CheckoutCartService {
 
 data class CheckoutServiceRequest(
     val clientId: String,
-    val items: List<String>
+    val items: List<CartItemDto>
+)
+
+data class CartItemDto(
+    val item: String,
+    val quantity: Int
 )
 
 data class CheckoutServiceResponse(

@@ -1,14 +1,36 @@
 package es.urjc.realfood.clients.unit
 
+import es.urjc.realfood.clients.application.FindByClientIdCart
 import es.urjc.realfood.clients.application.FindByClientIdClientCartTest
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCart
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCartId
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
+import es.urjc.realfood.clients.domain.repository.CartRepository
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
-import java.lang.IllegalArgumentException
+import org.springframework.boot.test.context.SpringBootTest
 
+@SpringBootTest(
+    classes = [
+        CartRepository::class
+    ]
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FindByClientIdClientCartUnitaryTest : FindByClientIdClientCartTest() {
+
+    lateinit var cartRepository: CartRepository
+    lateinit var findByClientIdCart: FindByClientIdCart
+
+    @BeforeAll
+    fun init() {
+        cartRepository = Mockito.mock(CartRepository::class.java)
+        findByClientIdCart = FindByClientIdCart(cartRepository)
+    }
 
     @Test
     fun `given valid id when find cart by client id then return cart`() {
@@ -22,11 +44,11 @@ class FindByClientIdClientCartUnitaryTest : FindByClientIdClientCartTest() {
 
     @Test
     fun `given invalid id when find cart by client id then return illegal argument exception`() {
-        val exc = Assertions.assertThrows(IllegalArgumentException::class.java) {
+        val exc = assertThrows(IllegalArgumentException::class.java) {
             findByClientIdCart(invalidFindByClientIdCartRequest())
         }
 
-        Assertions.assertTrue(exc.message!!.contains("Invalid UUID"))
+        assertTrue(exc.message!!.contains("Invalid UUID"))
     }
 
     @Test
@@ -34,7 +56,7 @@ class FindByClientIdClientCartUnitaryTest : FindByClientIdClientCartTest() {
         `when`(cartRepository.findByClientId(validClientId()))
             .thenReturn(null)
 
-        val exc = Assertions.assertThrows(EntityNotFoundException::class.java) {
+        val exc = assertThrows(EntityNotFoundException::class.java) {
             findByClientIdCart(validFindByClientIdCartRequest())
         }
 
