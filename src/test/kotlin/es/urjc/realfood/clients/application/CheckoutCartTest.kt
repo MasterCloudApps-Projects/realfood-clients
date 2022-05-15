@@ -52,7 +52,7 @@ class CheckoutCartTest {
     protected fun validCheckoutServiceRequest(): CheckoutServiceRequest {
         return CheckoutServiceRequest(
             clientId = validClientId().toString(),
-            items = listOf(validItemId())
+            items = listOf(validCartItemDto())
         )
     }
 
@@ -99,6 +99,13 @@ class CheckoutCartTest {
     protected fun validCartItem(): CartItem {
         return CartItem(
             itemId = validItemId(),
+            quantity = 5
+        )
+    }
+
+    protected fun validCartItemDto(): es.urjc.realfood.clients.domain.services.CartItemDto {
+        return es.urjc.realfood.clients.domain.services.CartItemDto(
+            item = validItemId(),
             quantity = 5
         )
     }

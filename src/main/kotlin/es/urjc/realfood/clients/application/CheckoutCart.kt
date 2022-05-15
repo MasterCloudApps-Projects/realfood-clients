@@ -1,13 +1,11 @@
 package es.urjc.realfood.clients.application
 
-import es.urjc.realfood.clients.domain.ClientId
-import es.urjc.realfood.clients.domain.Order
-import es.urjc.realfood.clients.domain.OrderId
-import es.urjc.realfood.clients.domain.Status
+import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.exception.ProductException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.OrderRepository
+import es.urjc.realfood.clients.domain.services.CartItemDto
 import es.urjc.realfood.clients.domain.services.CheckoutCartService
 import es.urjc.realfood.clients.domain.services.CheckoutServiceRequest
 import org.springframework.stereotype.Service
@@ -28,13 +26,18 @@ class CheckoutCart(
         val cart = cartRepository.findByClientId(clientId)
             ?: throw EntityNotFoundException("Cart not found")
 
-        if(cart.items.isEmpty())
+        if (cart.items.isEmpty())
             throw IllegalArgumentException("Empty cart!")
 
         val response = checkoutCartService(
             CheckoutServiceRequest(
                 clientId = clientId.toString(),
-                cart.items.map { item -> item.value.itemId }
+                items = cart.items.map { item ->
+                    CartItemDto(
+                        item = item.value.itemId,
+                        quantity = item.value.quantity
+                    )
+                }
             )
         )
 
