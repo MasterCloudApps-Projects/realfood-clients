@@ -2,54 +2,12 @@ package es.urjc.realfood.clients.infrastructure.api.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import es.urjc.realfood.clients.application.*
-import es.urjc.realfood.clients.infrastructure.api.security.JWTGeneratorService
-import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
-import io.restassured.RestAssured
-import io.restassured.module.mockmvc.RestAssuredMockMvc
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.TestInstance
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.boot.web.server.LocalServerPort
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientIdString
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validJwt
 
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class ClientRestControllerTest {
 
-    @LocalServerPort
-    var port = 0
-
-    @MockBean
-    lateinit var findByIdClient: FindByIdClient
-
-    @MockBean
-    lateinit var loginClient: LoginClient
-
-    @MockBean
-    lateinit var deleteClient: DeleteClient
-
-    @MockBean
-    lateinit var jwtValidatorService: JWTValidatorService
-
-    lateinit var clientRestController: ClientRestController
-
     private val objectMapper = ObjectMapper()
-    private val jwtGeneratorService = JWTGeneratorService("1234", "realfood-auth")
-
-    @BeforeAll
-    fun setUp() {
-        clientRestController = ClientRestController(
-            findByIdClient = findByIdClient,
-            deleteClient = deleteClient,
-            loginClient = loginClient,
-            jwtService = jwtValidatorService
-        )
-
-        RestAssured.port = Integer.parseInt(System.getProperty("port", "$port"))
-        RestAssuredMockMvc.standaloneSetup(clientRestController)
-    }
 
     protected fun validFindByIdClientRequestJson(): String {
         return objectMapper.writeValueAsString(validFindByIdClientRequest())
@@ -57,13 +15,13 @@ abstract class ClientRestControllerTest {
 
     protected fun validFindByIdClientRequest(): FindByIdClientRequest {
         return FindByIdClientRequest(
-            id = validUserId()
+            id = validClientIdString()
         )
     }
 
     protected fun validFindByIdClientResponse(): FindByIdClientResponse {
         return FindByIdClientResponse(
-            id = validUserId(),
+            id = validClientIdString(),
             name = "Cristofer",
             lastName = "Lopez",
             email = "cristofer@cristofer.es"
@@ -76,7 +34,7 @@ abstract class ClientRestControllerTest {
 
     protected fun validDeleteClientRequest(): DeleteClientRequest {
         return DeleteClientRequest(
-            id = validUserId()
+            id = validClientIdString()
         )
     }
 
@@ -93,13 +51,9 @@ abstract class ClientRestControllerTest {
 
     protected fun validLoginClientResponse(): LoginClientResponse {
         return LoginClientResponse(
-            clientId = validUserId(),
+            clientId = validClientIdString(),
             token = validJwt()
         )
     }
-
-    protected fun validUserId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a99"
-
-    protected fun validJwt(): String = jwtGeneratorService.generateJwt(validUserId())
 
 }

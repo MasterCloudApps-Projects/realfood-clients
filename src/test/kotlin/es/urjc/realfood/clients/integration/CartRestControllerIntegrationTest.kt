@@ -1,23 +1,77 @@
 package es.urjc.realfood.clients.integration
 
-import es.urjc.realfood.clients.application.AddItemToCartResponse
-import es.urjc.realfood.clients.application.CheckoutCartResponse
-import es.urjc.realfood.clients.application.FindByClientIdCartResponse
+import es.urjc.realfood.clients.application.*
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCartIdString
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validItemId
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientIdString
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validJwt
+import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderIdString
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
+import es.urjc.realfood.clients.infrastructure.api.rest.CartRestController
 import es.urjc.realfood.clients.infrastructure.api.rest.CartRestControllerTest
+import es.urjc.realfood.clients.infrastructure.api.security.JWTValidatorService
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.hamcrest.Matchers
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyMap
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.web.server.LocalServerPort
 
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CartRestControllerIntegrationTest : CartRestControllerTest() {
+
+    @LocalServerPort
+    var port = 0
+
+    @MockBean
+    lateinit var findByClientIdCart: FindByClientIdCart
+
+    @MockBean
+    lateinit var addItemToCart: AddItemToCart
+
+    @MockBean
+    lateinit var clearCart: ClearCart
+
+    @MockBean
+    lateinit var deleteItemFromCart: DeleteItemFromCart
+
+    @MockBean
+    lateinit var checkoutCart: CheckoutCart
+
+    @MockBean
+    lateinit var jwtValidatorService: JWTValidatorService
+
+    lateinit var cartRestController: CartRestController
+
+    @BeforeAll
+    fun setUp() {
+        cartRestController = CartRestController(
+            findByClientIdCart = findByClientIdCart,
+            addItemToCart = addItemToCart,
+            clearCart = clearCart,
+            deleteItemFromCart = deleteItemFromCart,
+            checkoutCart = checkoutCart,
+            jwtValidatorService = jwtValidatorService
+        )
+
+        RestAssured.port = Integer.parseInt(System.getProperty("port", "$port"))
+        RestAssuredMockMvc.standaloneSetup(cartRestController)
+    }
 
     @Test
     fun `given cart endpoint when get user cart then return status ok`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(findByClientIdCart(validFindByClientIdCartRequest()))
             .thenReturn(validFindByClientIdCartResponse())
 
@@ -29,14 +83,15 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
             .then()
             .assertThat()
             .statusCode(200)
-            .body("cartId", Matchers.equalTo(validCartId()))
+            .body("cartId", Matchers.equalTo(validCartIdString()))
             .extract().`as`(FindByClientIdCartResponse::class.java)
     }
 
     @Test
     fun `given cart endpoint when get user cart of nonexistent user then return 404 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(findByClientIdCart(validFindByClientIdCartRequest()))
             .thenThrow(EntityNotFoundException("NOT FOUND"))
 
@@ -54,7 +109,8 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given cart endpoint when illegal user id then return 400 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(findByClientIdCart(validFindByClientIdCartRequest()))
             .thenThrow(IllegalArgumentException("ILLEGAL"))
 
@@ -72,7 +128,7 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given cart endpoint when clear user cart then return status ok`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
 
         RestAssured.given()
             .request()
@@ -87,7 +143,8 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given cart endpoint when clear user cart of nonexistent user then return 404 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(clearCart(validClearCartRequest()))
             .thenThrow(EntityNotFoundException("NOT FOUND"))
 
@@ -105,7 +162,8 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given add item to cart endpoint when add item then return status ok`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(addItemToCart(validAddItemToCartRequest()))
             .thenReturn(validAddItemToCartResponse())
 
@@ -126,7 +184,8 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given add item to cart endpoint when nonexistent user then return 404 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(addItemToCart(validAddItemToCartRequest()))
             .thenThrow(EntityNotFoundException("NOT FOUND"))
 
@@ -146,7 +205,7 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given remove item from cart endpoint when remove item then return status ok`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
 
         RestAssured.given()
             .request()
@@ -163,7 +222,8 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given remove item from cart endpoint when nonexistent user then return 404 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(deleteItemFromCart(validDeleteItemFromCartRequest()))
             .thenThrow(EntityNotFoundException("NOT FOUND"))
 
@@ -183,7 +243,8 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     @Test
     fun `given checkout cart endpoint when checkout then return status ok`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(checkoutCart(validCheckoutCartRequest()))
             .thenReturn(validCheckoutCartResponse())
 
@@ -197,14 +258,15 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
             .then()
             .assertThat()
             .statusCode(200)
-            .body("orderId", Matchers.equalTo(validOrderId()))
+            .body("orderId", Matchers.equalTo(validOrderIdString()))
             .extract().`as`(CheckoutCartResponse::class.java)
     }
 
     @Test
     fun `given checkout cart endpoint when nonexistent user then return 404 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
-            .thenReturn(validUserId())
+            .thenReturn(validClientIdString())
+
         `when`(checkoutCart(validCheckoutCartRequest()))
             .thenThrow(EntityNotFoundException("NOT FOUND"))
 
