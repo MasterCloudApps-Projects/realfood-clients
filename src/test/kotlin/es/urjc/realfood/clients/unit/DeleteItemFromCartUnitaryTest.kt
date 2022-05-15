@@ -1,13 +1,37 @@
 package es.urjc.realfood.clients.unit
 
+import es.urjc.realfood.clients.application.DeleteItemFromCart
 import es.urjc.realfood.clients.application.DeleteItemFromCartTest
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
+import es.urjc.realfood.clients.domain.repository.CartRepository
+import es.urjc.realfood.clients.domain.services.FindByIdProductService
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.*
+import org.springframework.boot.test.context.SpringBootTest
 
+@SpringBootTest(
+    classes = [
+        CartRepository::class,
+        FindByIdProductService::class
+    ]
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DeleteItemFromCartUnitaryTest : DeleteItemFromCartTest() {
+
+    lateinit var cartRepository: CartRepository
+    lateinit var deleteItemFromCart: DeleteItemFromCart
+
+    @BeforeAll
+    fun init() {
+        cartRepository = mock(CartRepository::class.java)
+        deleteItemFromCart = DeleteItemFromCart(
+            cartRepository = cartRepository
+        )
+    }
 
     @Test
     fun `given valid request when remove item from user cart then remove item`() {
@@ -23,11 +47,11 @@ class DeleteItemFromCartUnitaryTest : DeleteItemFromCartTest() {
 
     @Test
     fun `given invalid client id when remove item from user cart then return illegal argument exception`() {
-        val exc = Assertions.assertThrows(IllegalArgumentException::class.java) {
+        val exc = assertThrows(IllegalArgumentException::class.java) {
             deleteItemFromCart(invalidDeleteItemFromCartRequest())
         }
 
-        Assertions.assertTrue(exc.message!!.contains("Invalid UUID"))
+        assertTrue(exc.message!!.contains("Invalid UUID"))
     }
 
     @Test
@@ -35,7 +59,7 @@ class DeleteItemFromCartUnitaryTest : DeleteItemFromCartTest() {
         `when`(cartRepository.findByClientId(validClientId()))
             .thenReturn(null)
 
-        val exc = Assertions.assertThrows(EntityNotFoundException::class.java) {
+        val exc = assertThrows(EntityNotFoundException::class.java) {
             deleteItemFromCart(validDeleteItemFromCartRequest())
         }
 

@@ -1,13 +1,34 @@
 package es.urjc.realfood.clients.unit
 
+import es.urjc.realfood.clients.application.ClearCart
 import es.urjc.realfood.clients.application.ClearCartTest
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCart
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
+import es.urjc.realfood.clients.domain.repository.CartRepository
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.*
+import org.springframework.boot.test.context.SpringBootTest
 
+@SpringBootTest(
+    classes = [
+        CartRepository::class
+    ]
+)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ClearCartUnitaryTest : ClearCartTest() {
+
+    lateinit var cartRepository: CartRepository
+    lateinit var clearCart: ClearCart
+
+    @BeforeAll
+    fun init() {
+        cartRepository = mock(CartRepository::class.java)
+        clearCart = ClearCart(cartRepository)
+    }
 
     @Test
     fun `given valid id when clear user cart then clear cart`() {
@@ -24,11 +45,11 @@ class ClearCartUnitaryTest : ClearCartTest() {
 
     @Test
     fun `given invalid id when clear user cart then return illegal argument exception`() {
-        val exc = Assertions.assertThrows(IllegalArgumentException::class.java) {
+        val exc = assertThrows(IllegalArgumentException::class.java) {
             clearCart(invalidClearCartRequest())
         }
 
-        Assertions.assertTrue(exc.message!!.contains("Invalid UUID"))
+        assertTrue(exc.message!!.contains("Invalid UUID"))
     }
 
     @Test
@@ -36,7 +57,7 @@ class ClearCartUnitaryTest : ClearCartTest() {
         `when`(cartRepository.findByClientId(validClientId()))
             .thenReturn(null)
 
-        val exc = Assertions.assertThrows(EntityNotFoundException::class.java) {
+        val exc = assertThrows(EntityNotFoundException::class.java) {
             clearCart(validClearCartRequest())
         }
 
