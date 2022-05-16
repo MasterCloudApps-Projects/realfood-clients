@@ -1,15 +1,17 @@
 package es.urjc.realfood.clients.application
 
-import es.urjc.realfood.clients.domain.*
+import es.urjc.realfood.clients.domain.ClientId
+import es.urjc.realfood.clients.domain.Order
+import es.urjc.realfood.clients.domain.OrderId
+import es.urjc.realfood.clients.domain.Status
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.exception.ProductException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.OrderRepository
+import es.urjc.realfood.clients.domain.services.*
 import es.urjc.realfood.clients.domain.services.CartItemDto
-import es.urjc.realfood.clients.domain.services.CheckoutCartService
-import es.urjc.realfood.clients.domain.services.CheckoutServiceRequest
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
 import javax.transaction.Transactional
 
 @Service
@@ -17,8 +19,11 @@ import javax.transaction.Transactional
 class CheckoutCart(
     private val cartRepository: CartRepository,
     private val orderRepository: OrderRepository,
-    private val checkoutCartService: CheckoutCartService
+    private val checkoutCartService: CheckoutCartService,
+    private val paymentEventPublisher: PaymentEventPublisher
 ) {
+
+    private val logger = LoggerFactory.getLogger(CheckoutCart::class.java)
 
     operator fun invoke(request: CheckoutCartRequest): CheckoutCartResponse {
         val clientId = ClientId(request.clientId)
@@ -44,13 +49,30 @@ class CheckoutCart(
         if (response.statusCode != 200)
             throw ProductException("Error from Restaurants API")
 
+        logger.info("All products available in new order for client with id: {}", clientId.toString())
+
         val order = Order(
             id = OrderId(response.orderId!!),
             status = Status.PENDING,
-            client = cart.client
+            client = cart.client,
+            price = response.price!!
         )
 
         orderRepository.save(order)
+
+        logger.info("New order in BD with id '{}' for client with id '{}'", order.id.toString(), clientId.toString())
+
+        paymentEventPublisher(
+            PaymentEvent(
+                clientId = clientId.toString(),
+                orderId = order.id.toString(),
+                price = order.price
+            )
+        )
+
+        cart.items.clear()
+
+        cartRepository.save(cart)
 
         return CheckoutCartResponse(
             orderId = order.id.toString()

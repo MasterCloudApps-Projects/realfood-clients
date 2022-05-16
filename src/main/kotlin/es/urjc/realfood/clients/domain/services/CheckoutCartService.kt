@@ -18,5 +18,6 @@ data class CartItemDto(
 
 data class CheckoutServiceResponse(
     val statusCode: Int,
-    val orderId: String?
+    val orderId: String?,
+    val price: Double?
 )

@@ -3,6 +3,7 @@ package es.urjc.realfood.clients.application
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCartItemDto
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderId
+import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validPrice
 import es.urjc.realfood.clients.domain.services.CheckoutServiceRequest
 import es.urjc.realfood.clients.domain.services.CheckoutServiceResponse
 
@@ -30,14 +31,16 @@ abstract class CheckoutCartTest {
     protected fun validCheckoutServiceResponse(): CheckoutServiceResponse {
         return CheckoutServiceResponse(
             statusCode = 200,
-            orderId = validOrderId().toString()
+            orderId = validOrderId().toString(),
+            price = validPrice()
         )
     }
 
     protected fun invalidCheckoutServiceResponse(): CheckoutServiceResponse {
         return CheckoutServiceResponse(
             statusCode = 400,
-            orderId = null
+            orderId = null,
+            price = null
         )
     }
 

@@ -5,18 +5,20 @@ import es.urjc.realfood.clients.application.CheckoutCartTest
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.emptyCart
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCart
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
+import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrder
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderId
+import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validPaymentEvent
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.exception.ProductException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.OrderRepository
 import es.urjc.realfood.clients.domain.services.CheckoutCartService
+import es.urjc.realfood.clients.domain.services.PaymentEventPublisher
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest(
@@ -31,17 +33,20 @@ class CheckoutCartUnitaryTest : CheckoutCartTest() {
     lateinit var cartRepository: CartRepository
     lateinit var orderRepository: OrderRepository
     lateinit var checkoutCartService: CheckoutCartService
+    lateinit var paymentEventPublisher: PaymentEventPublisher
     lateinit var checkoutCart: CheckoutCart
 
     @BeforeAll
     fun init() {
-        cartRepository = Mockito.mock(CartRepository::class.java)
-        orderRepository = Mockito.mock(OrderRepository::class.java)
-        checkoutCartService = Mockito.mock(CheckoutCartService::class.java)
+        cartRepository = mock(CartRepository::class.java)
+        orderRepository = mock(OrderRepository::class.java)
+        checkoutCartService = mock(CheckoutCartService::class.java)
+        paymentEventPublisher = mock(PaymentEventPublisher::class.java)
         checkoutCart = CheckoutCart(
             cartRepository = cartRepository,
             orderRepository = orderRepository,
-            checkoutCartService = checkoutCartService
+            checkoutCartService = checkoutCartService,
+            paymentEventPublisher = paymentEventPublisher
         )
     }
 
@@ -55,6 +60,8 @@ class CheckoutCartUnitaryTest : CheckoutCartTest() {
 
         val response = checkoutCart(validCheckoutCartRequest())
 
+        verify(orderRepository, atLeastOnce()).save(validOrder())
+        verify(paymentEventPublisher, atLeastOnce()).invoke(validPaymentEvent())
         assertEquals(validOrderId().toString(), response.orderId)
     }
 
