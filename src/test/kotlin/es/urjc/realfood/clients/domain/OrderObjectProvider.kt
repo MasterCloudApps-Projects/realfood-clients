@@ -17,7 +17,7 @@ class OrderObjectProvider {
         fun validOrder(): Order {
             return Order(
                 id = validOrderId(),
-                status = Status.PENDING,
+                status = pendingStatus(),
                 client = validClient(),
                 price = validPrice()
             )
@@ -30,6 +30,10 @@ class OrderObjectProvider {
                 price = validPrice()
             )
         }
+
+        fun inProgressStatus() = Status.IN_PROGRESS
+
+        fun pendingStatus() = Status.PENDING
 
     }
 
