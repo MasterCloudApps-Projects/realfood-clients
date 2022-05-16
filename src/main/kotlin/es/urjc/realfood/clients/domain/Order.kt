@@ -10,10 +10,12 @@ class Order(
     val id: OrderId,
 
     @Enumerated(EnumType.STRING)
-    val status: Status,
+    var status: Status,
 
     @ManyToOne
-    val client: Client
+    val client: Client,
+
+    val price: Double
 ) {
 
     override fun toString(): String {

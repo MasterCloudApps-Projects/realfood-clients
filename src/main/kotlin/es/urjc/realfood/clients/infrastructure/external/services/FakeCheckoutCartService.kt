@@ -12,7 +12,8 @@ class FakeCheckoutCartService : CheckoutCartService {
     override fun invoke(request: CheckoutServiceRequest): CheckoutServiceResponse {
         return CheckoutServiceResponse(
             statusCode = 200,
-            orderId = UUID.randomUUID().toString()
+            orderId = UUID.randomUUID().toString(),
+            price = 20.0
         )
     }
 

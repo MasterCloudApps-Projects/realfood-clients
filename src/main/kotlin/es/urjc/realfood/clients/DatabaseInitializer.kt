@@ -3,12 +3,14 @@ package es.urjc.realfood.clients
 import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
+import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.annotation.PostConstruct
 
 @Component
+@Profile("local")
 class DatabaseInitializer(
     private val clientRepository: ClientRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
@@ -37,12 +39,19 @@ class DatabaseInitializer(
             )
         )
 
-        cartRepository.save(
-            Cart(
-                id = CartId(UUID.nameUUIDFromBytes("cristofer".toByteArray()).toString()),
-                client = cristofer
-            )
+        val cristoferCart = Cart(
+            id = CartId(UUID.nameUUIDFromBytes("cristofer".toByteArray()).toString()),
+            client = cristofer
         )
+
+        val cartItem = CartItem(
+            itemId = UUID.nameUUIDFromBytes("hamburguesa".toByteArray()).toString(),
+            quantity = 2
+        )
+
+        cristoferCart.items[cartItem.itemId] = cartItem
+
+        cartRepository.save(cristoferCart)
 
         cartRepository.save(
             Cart(
