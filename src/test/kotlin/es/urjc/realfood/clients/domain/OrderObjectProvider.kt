@@ -4,6 +4,7 @@ import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClien
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientIdString
 import es.urjc.realfood.clients.domain.services.PaymentEvent
 import es.urjc.realfood.clients.domain.services.PreparationEvent
+import es.urjc.realfood.clients.domain.services.ShipmentEvent
 
 class OrderObjectProvider {
 
@@ -34,6 +35,13 @@ class OrderObjectProvider {
 
         fun validPreparationEvent(): PreparationEvent {
             return PreparationEvent(
+                clientId = validClientIdString(),
+                orderId = validOrderIdString()
+            )
+        }
+
+        fun validShipmentEvent(): ShipmentEvent {
+            return ShipmentEvent(
                 clientId = validClientIdString(),
                 orderId = validOrderIdString()
             )

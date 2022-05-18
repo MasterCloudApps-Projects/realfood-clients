@@ -18,6 +18,11 @@ class RealfoodClientsApplication {
         return Queue("prepared-orders", false)
     }
 
+    @Bean
+    fun sentOrders(): Queue {
+        return Queue("sent-orders", false)
+    }
+
 }
 
 fun main(args: Array<String>) {
