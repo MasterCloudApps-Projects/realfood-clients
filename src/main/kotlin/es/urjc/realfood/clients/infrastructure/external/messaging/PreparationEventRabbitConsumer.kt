@@ -1,6 +1,8 @@
 package es.urjc.realfood.clients.infrastructure.external.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import es.urjc.realfood.clients.application.PrepareOrder
+import es.urjc.realfood.clients.application.PrepareOrderRequest
 import es.urjc.realfood.clients.application.UpdateOrderStatus
 import es.urjc.realfood.clients.application.UpdateOrderStatusRequest
 import es.urjc.realfood.clients.domain.Status
@@ -10,7 +12,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class PreparationEventRabbitConsumer(
-    private val updateOrderStatus: UpdateOrderStatus
+    private val updateOrderStatus: UpdateOrderStatus,
+    private val prepareOrder: PrepareOrder
 ) {
 
     private val logger = LoggerFactory.getLogger(PaymentEventRabbitConsumer::class.java)
@@ -29,6 +32,13 @@ class PreparationEventRabbitConsumer(
         )
 
         logger.info("[Consumed] prepared order '{}'", preparedEvent.orderId)
+
+        prepareOrder(
+            PrepareOrderRequest(
+                clientId = preparedEvent.clientId,
+                orderId = preparedEvent.orderId
+            )
+        )
     }
 
 }
