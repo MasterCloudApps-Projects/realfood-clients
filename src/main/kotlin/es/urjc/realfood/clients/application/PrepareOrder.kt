@@ -1,5 +1,6 @@
 package es.urjc.realfood.clients.application
 
+import es.urjc.realfood.clients.domain.ClientId
 import es.urjc.realfood.clients.domain.OrderId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.repository.OrderRepository
@@ -17,12 +18,14 @@ class PrepareOrder(
 
     operator fun invoke(request: PrepareOrderRequest) {
         val orderId = OrderId(request.orderId)
+        val clientId = ClientId(request.clientId)
 
-        orderRepository.findById(orderId)
+        orderRepository.findByIdAndClientId(orderId, clientId)
             ?: throw EntityNotFoundException("Order not found")
 
         preparationEventPublisher(
             PreparationEvent(
+                clientId = request.clientId,
                 orderId = request.orderId
             )
         )
@@ -31,5 +34,6 @@ class PrepareOrder(
 }
 
 data class PrepareOrderRequest(
+    val clientId: String,
     val orderId: String
 )

@@ -41,6 +41,7 @@ class PaymentEventRabbitConsumer(
         if (status == Status.IN_PROGRESS) {
             prepareOrder(
                 PrepareOrderRequest(
+                    clientId = payedEvent.clientId,
                     orderId = payedEvent.orderId
                 )
             )

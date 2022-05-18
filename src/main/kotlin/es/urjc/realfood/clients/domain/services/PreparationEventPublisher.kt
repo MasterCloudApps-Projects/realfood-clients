@@ -7,5 +7,6 @@ interface PreparationEventPublisher {
 }
 
 data class PreparationEvent(
+    val clientId: String,
     val orderId: String
 )

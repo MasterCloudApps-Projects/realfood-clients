@@ -34,6 +34,7 @@ class OrderObjectProvider {
 
         fun validPreparationEvent(): PreparationEvent {
             return PreparationEvent(
+                clientId = validClientIdString(),
                 orderId = validOrderIdString()
             )
         }

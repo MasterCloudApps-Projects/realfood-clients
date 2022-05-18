@@ -2,6 +2,7 @@ package es.urjc.realfood.clients.unit
 
 import es.urjc.realfood.clients.application.PrepareOrder
 import es.urjc.realfood.clients.application.PrepareOrderTest
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrder
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderId
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validPreparationEvent
@@ -41,7 +42,8 @@ class PrepareOrderUnitaryTest : PrepareOrderTest() {
 
     @Test
     fun `given valid request when prepare order then send message to preparation publisher`() {
-        `when`(orderRepository.findById(validOrderId())).thenReturn(validOrder())
+        `when`(orderRepository.findByIdAndClientId(validOrderId(), validClientId()))
+            .thenReturn(validOrder())
 
         prepareOrder(validPrepareOrderRequest())
 
@@ -59,7 +61,8 @@ class PrepareOrderUnitaryTest : PrepareOrderTest() {
 
     @Test
     fun `given non existent order id when prepare order then throw entity not found exception`() {
-        `when`(orderRepository.findById(validOrderId())).thenReturn(null)
+        `when`(orderRepository.findByIdAndClientId(validOrderId(), validClientId()))
+            .thenReturn(null)
 
         val exc = assertThrows(EntityNotFoundException::class.java) {
             prepareOrder(validPrepareOrderRequest())
