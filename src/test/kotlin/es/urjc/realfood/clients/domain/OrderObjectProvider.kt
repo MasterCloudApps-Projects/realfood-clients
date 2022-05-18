@@ -3,6 +3,7 @@ package es.urjc.realfood.clients.domain
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClient
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientIdString
 import es.urjc.realfood.clients.domain.services.PaymentEvent
+import es.urjc.realfood.clients.domain.services.PreparationEvent
 
 class OrderObjectProvider {
 
@@ -28,6 +29,13 @@ class OrderObjectProvider {
                 clientId = validClientIdString(),
                 orderId = validOrderIdString(),
                 price = validPrice()
+            )
+        }
+
+        fun validPreparationEvent(): PreparationEvent {
+            return PreparationEvent(
+                clientId = validClientIdString(),
+                orderId = validOrderIdString()
             )
         }
 

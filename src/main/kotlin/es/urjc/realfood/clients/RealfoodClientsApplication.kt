@@ -13,6 +13,11 @@ class RealfoodClientsApplication {
         return Queue("payments", false)
     }
 
+    @Bean
+    fun preparedOrders(): Queue {
+        return Queue("prepared-orders", false)
+    }
+
 }
 
 fun main(args: Array<String>) {

@@ -1,6 +1,8 @@
 package es.urjc.realfood.clients.infrastructure.external.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import es.urjc.realfood.clients.application.PrepareOrder
+import es.urjc.realfood.clients.application.PrepareOrderRequest
 import es.urjc.realfood.clients.application.UpdateOrderStatus
 import es.urjc.realfood.clients.application.UpdateOrderStatusRequest
 import es.urjc.realfood.clients.domain.Status
@@ -10,7 +12,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class PaymentEventRabbitConsumer(
-    val updateOrderStatus: UpdateOrderStatus
+    private val updateOrderStatus: UpdateOrderStatus,
+    private val prepareOrder: PrepareOrder
 ) {
 
     private val logger = LoggerFactory.getLogger(PaymentEventRabbitConsumer::class.java)
@@ -20,11 +23,12 @@ class PaymentEventRabbitConsumer(
     @RabbitListener(queues = ["payments"], ackMode = "AUTO")
     private fun consume(message: String) {
         val payedEvent = objectMapper.readValue(message, PayedEvent::class.java)
+        val status = if (payedEvent.success) Status.IN_PROGRESS else Status.PAYMENT_ERROR
         updateOrderStatus(
             UpdateOrderStatusRequest(
                 clientId = payedEvent.clientId,
                 orderId = payedEvent.orderId,
-                status = if (payedEvent.success) Status.IN_PROGRESS else Status.PAYMENT_ERROR
+                status = status
             )
         )
 
@@ -33,6 +37,15 @@ class PaymentEventRabbitConsumer(
             payedEvent.clientId,
             payedEvent.orderId
         )
+
+        if (status == Status.IN_PROGRESS) {
+            prepareOrder(
+                PrepareOrderRequest(
+                    clientId = payedEvent.clientId,
+                    orderId = payedEvent.orderId
+                )
+            )
+        }
     }
 
 }
