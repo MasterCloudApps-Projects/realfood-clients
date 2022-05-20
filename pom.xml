@@ -10,7 +10,7 @@
     </parent>
     <groupId>es.urjc.realfood</groupId>
     <artifactId>clients</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
     <name>realfood-clients</name>
     <description>realfood-clients</description>
     <properties>
