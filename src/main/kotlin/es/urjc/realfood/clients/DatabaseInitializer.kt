@@ -3,14 +3,12 @@ package es.urjc.realfood.clients
 import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
-import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.annotation.PostConstruct
 
 @Component
-@Profile("local")
 class DatabaseInitializer(
     private val clientRepository: ClientRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
