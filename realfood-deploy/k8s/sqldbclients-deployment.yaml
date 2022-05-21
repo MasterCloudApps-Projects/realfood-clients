@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqldbclients
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqldbclients
+  template:
+    metadata:
+      labels:
+        app: sqldbclients
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: realfood-clients
+        - name: POSTGRES_PASSWORD
+          value: root
+        - name: POSTGRES_USER
+          value: root
+        image: postgres
+        imagePullPolicy: IfNotPresent
+        name: sqldbclients
+        ports:
+        - containerPort: 5432
+      restartPolicy: Always

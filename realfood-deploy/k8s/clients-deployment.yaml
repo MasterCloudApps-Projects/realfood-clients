@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clients
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clients
+  template:
+    metadata:
+      labels:
+        app: clients
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_DB
+          value: realfood-clients
+        - name: DATABASE_HOST
+          value: sqldbclients
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: RABBITMQ_HOST
+          value: rabbitmq
+        - name: RABBITMQ_PORT
+          value: "5672"
+        image: cloudappsteam/es.urjc.realfood.clients:0.12.0
+        imagePullPolicy: IfNotPresent
+        name: realfoodclients
+        ports:
+        - containerPort: 8081
+      restartPolicy: Always
