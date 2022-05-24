@@ -7,7 +7,7 @@ Servicio de clientes del TFM del Master CloudApps de la URJC
 - Juan Antonio Ávila Catalán, [@juanaviladev](https://github.com/juanaviladev)
 - Cristo Fernando López Cabañas, [@cristoflop](https://github.com/cristoflop)
 
-Este servicio contiene toda la funcionalidad asociada a los clientes de la aplicacion RealFood, esta aplicación consta
+Este servicio contiene toda la funcionalidad asociada a los clientes de la aplicación RealFood, esta aplicación consta
 de los siguientes componentes:
 
 - [GitHub - Realfood-Clients](https://github.com/MasterCloudApps-Projects/realfood-clients)
@@ -37,7 +37,7 @@ Operaciones disponibles en el servicio:
         - DELETE    /api/clients/me/cart/item           Borrar item del carrito
         - POST      /api/clients/me/cart/checkout       Iniciar un pedido
 
-Operaciones de Publicacion/Suscripcion que ejecuta el servicio:
+Operaciones de Publicación/Suscripción que ejecuta el servicio:
 
         - [Publish] Payment request             Intento de pago de pedido
         - [Publish] Preparation request         Solicitud de preparacion de pedido
@@ -102,7 +102,7 @@ classDiagram
 $ docker-compose -f realfood-deply/docker-compose.yml up --build
 ```
 
-- Despliegue completo (Recursos y servicio de clientes solamente)
+- Despliegue completo (Recursos y servicio de clientes)
 
 ```
 $ docker-compose -f realfood-deply/docker-compose-prod.yml up --build
