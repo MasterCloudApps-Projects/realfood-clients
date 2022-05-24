@@ -7,14 +7,16 @@ Servicio de clientes del TFM del Master CloudApps de la URJC
 - Juan Antonio Ávila Catalán, [@juanaviladev](https://github.com/juanaviladev)
 - Cristo Fernando López Cabañas, [@cristoflop](https://github.com/cristoflop)
 
-Este servicio contiene toda la funcionalidad asociada a los clientes de la aplicacion RealFood, esta aplicación consta de los siguientes componentes:
+Este servicio contiene toda la funcionalidad asociada a los clientes de la aplicacion RealFood, esta aplicación consta
+de los siguientes componentes:
 
 - [GitHub - Realfood-Clients](https://github.com/MasterCloudApps-Projects/realfood-clients)
 - [GitHub - Realfood-Restaurants](https://github.com/MasterCloudApps-Projects/realfood-restaurants)
 - [GitHub - Realfood-Payments](https://github.com/MasterCloudApps-Projects/realfood-payments)
 - [GitHub - Realfood-Shipping](https://github.com/MasterCloudApps-Projects/realfood-shipping)
 
-Estos servicios se ha desarrollado siguiendo el estilo de [Arquitectura Hexagonal](https://es.wikipedia.org/wiki/Arquitectura_hexagonal_(software))
+Estos servicios se ha desarrollado siguiendo el estilo
+de [Arquitectura Hexagonal](https://es.wikipedia.org/wiki/Arquitectura_hexagonal_(software))
 
 Operaciones disponibles en el servicio:
 
@@ -96,30 +98,77 @@ classDiagram
 
 - Despliegue de recursos (Solo BD y broker de RabbitMq)
 
-        $ docker-compose -f realfood-deply/docker-compose-prod.yml up --build
+```
+$ docker-compose -f realfood-deply/docker-compose.yml up --build
+```
 
-- Despliegue completo (Recursos y servicio)
+- Despliegue completo (Recursos y servicio de clientes solamente)
 
-        $ docker-compose -f realfood-deply/docker-compose.yml up --build
+```
+$ docker-compose -f realfood-deply/docker-compose-prod.yml up --build
+```
 
 - Para observar que se han creado los contenedores:
 
-        $ docker ps
+```
+$ docker ps
+```
 
 Software recomendado: [Docker desktop](https://www.docker.com/) / [Rancher desktop](https://rancherdesktop.io/)
 
 ### Kubernetes
 
-- En la carpeta de realfood-deployment están los manifiestos para desplegar los recursos y el servicio
+En la carpeta de realfood-deployment están los manifiestos para desplegar los recursos y el servicio
 
-        $ minikube start
+- Arrancar el servicio de minikube
 
-        $ kubectl apply -f .
+```
+$ minikube start
+```
+
+- Arrancar broker de RabbitMQ
+
+```
+$ kubectl apply -f rabbitmq-pv.yaml
+
+$ kubectl apply -f rabbitmq-pv-claim.yaml
+
+$ kubectl apply -f rabbitmq-deployment.yaml
+
+$ kubectl apply -f rabbitmq-service.yaml
+```
+
+- Arrancar BD de clientes
+
+```
+$ kubectl apply -f sqldbclients-pv.yaml
+
+$ kubectl apply -f sqldbclients-pv-claim.yaml
+
+$ kubectl apply -f sqldbclients-deployment.yaml
+
+$ kubectl apply -f sqldbclients-service.yaml
+```
+
+- Arrancar Servicio de clientes
+
+```
+$ kubectl apply -f clients-deployment.yaml
+
+$ kubectl apply -f clients-service.yaml
+```
 
 - Para observar que se han desplegado los servicios:
 
-        $ kubectl get deployments
+```
+$ kubectl get deployments
 
-        $ kubectl get services
+$ kubectl get services
+```
+
+- Si se quiere levantar todo directamente:
+```
+$ kubectl apply -f .
+```
 
 Software recomendado: [k8sLens](https://k8slens.dev/)
