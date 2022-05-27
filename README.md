@@ -88,46 +88,7 @@ Cart *-- CartItem : * -items
 
 Ejemplo de diagrama de clases para el caso de uso Checkout Cart:
 
-```mermaid
-classDiagram
-    class CartRestController
-    class CheckoutCart
-    class OrderRepository{
-        <<interface>>
-    }
-    class CartRepository{
-        <<interface>>
-    }
-    class CheckoutCartService
-    class PaymentEventPublisher{
-        <<interface>>
-    }
-    class PostgresCartRepository
-    class PostgresOrderRepository
-    class ExternalCheckoutCartService
-    class PaymentEventRabbitPublisher
-    
-    class JpaCartRepository{
-        <<interface>>
-    }
-    class JpaOrderRepository{
-        <<interface>>
-    }
-
-    CartRestController ..> CheckoutCart
-    CheckoutCart ..> OrderRepository
-    CheckoutCart ..> CartRepository
-    CheckoutCart ..> CheckoutCartService
-    CheckoutCart ..> PaymentEventPublisher
-    
-    PostgresCartRepository ..> JpaCartRepository
-    PostgresOrderRepository ..> JpaOrderRepository
-    PostgresCartRepository ..|> CartRepository
-    PostgresOrderRepository ..|> OrderRepository
-    
-    ExternalCheckoutCartService --|> CheckoutCartService
-    PaymentEventRabbitPublisher ..|> PaymentEventPublisher
-```
+![alt text](https://github.com/MasterCloudApps-Projects/realfood-clients/blob/main/class-diagram-clients.png)
 
 ## Despliegue
 
