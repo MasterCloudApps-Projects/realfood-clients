@@ -48,11 +48,48 @@ Operaciones de Publicación/Suscripción que ejecuta el servicio:
         - [Consume] Shipment response           Respuesta de pedido enviado
         - [Consume] Completed response          Respuesta de pedido completado
 
+Modelo de datos:
+
+```mermaid
+classDiagram
+class Client
+class ClientId
+class Name
+class LastName
+class Email
+class Password
+
+Client *-- ClientId : -id
+Client *-- Name : -name
+Client *-- LastName : -lastName
+Client *-- Email : -email
+Client *-- Password : -password
+
+class Order {
+    -Double price
+}
+class OrderId
+class Status
+
+Order o-- Client : -client
+Order *-- OrderId : -id
+Order *-- Status : -status
+
+class Cart
+class CartItem{
+    -String itemId
+    -int quantity
+}
+
+Cart o-- Client : -client
+Cart *-- CartId : -id
+Cart *-- CartItem : * -items
+```
+
 Ejemplo de diagrama de clases para el caso de uso Checkout Cart:
 
 ```mermaid
 classDiagram
-    class CartRestController
     class CartRestController
     class CheckoutCart
     class OrderRepository{
