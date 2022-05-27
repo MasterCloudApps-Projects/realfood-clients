@@ -48,7 +48,7 @@ Operaciones de Publicación/Suscripción que ejecuta el servicio:
         - [Consume] Shipment response           Respuesta de pedido enviado
         - [Consume] Completed response          Respuesta de pedido completado
 
-Modelo de datos:
+Diagrama de clases del dominio de la aplicacion:
 
 ```mermaid
 classDiagram
