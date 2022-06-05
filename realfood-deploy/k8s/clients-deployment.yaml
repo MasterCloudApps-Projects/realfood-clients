@@ -24,7 +24,7 @@ spec:
           value: rabbitmq
         - name: RABBITMQ_PORT
           value: "5672"
-        image: cloudappsteam/es.urjc.realfood.clients:0.12.0
+        image: cloudappsteam/es.urjc.realfood.clients:0.14.0
         imagePullPolicy: IfNotPresent
         name: realfoodclients
         ports:
