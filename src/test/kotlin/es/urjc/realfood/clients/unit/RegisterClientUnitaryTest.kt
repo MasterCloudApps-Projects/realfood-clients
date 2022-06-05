@@ -8,6 +8,7 @@ import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClien
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.JWTService
+import es.urjc.realfood.clients.domain.services.RegisterEventPublisher
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
@@ -32,6 +33,7 @@ class RegisterClientUnitaryTest : RegisterClientTest() {
     lateinit var cartRepository: CartRepository
     lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
     lateinit var jwtService: JWTService
+    lateinit var registerEventPublisher: RegisterEventPublisher
     lateinit var registerClient: RegisterClient
 
     @BeforeAll
@@ -40,12 +42,14 @@ class RegisterClientUnitaryTest : RegisterClientTest() {
         cartRepository = Mockito.mock(CartRepository::class.java)
         bCryptPasswordEncoder = Mockito.mock(BCryptPasswordEncoder::class.java)
         jwtService = Mockito.mock(JWTService::class.java)
+        registerEventPublisher = Mockito.mock(RegisterEventPublisher::class.java)
 
         registerClient = RegisterClient(
             clientRepository = clientRepository,
             cartRepository = cartRepository,
             bCryptPasswordEncoder = bCryptPasswordEncoder,
-            jwtService = jwtService
+            jwtService = jwtService,
+            registerEventPublisher = registerEventPublisher
         )
     }
 
