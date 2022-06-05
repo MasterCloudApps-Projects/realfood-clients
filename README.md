@@ -39,16 +39,18 @@ Operaciones disponibles en el servicio:
 
 Operaciones de Publicación/Suscripción que ejecuta el servicio:
 
-        - [Publish] Payment request             Intento de pago de pedido
-        - [Publish] Preparation request         Solicitud de preparacion de pedido
-        - [Publish] Shipment request            Solicitud de envio de pedido
+        - [Publish] Payment request                     Intento de pago de pedido
+        - [Publish] Preparation request                 Solicitud de preparacion de pedido
+        - [Publish] Shipment request                    Solicitud de envio de pedido
+        - [Publish] Register user request               Evento de registro de cliente
+        - [Publish] Delete user request                 Evento de borrado de cliente
 
-        - [Consume] Payment response            Respuesta de pago completado o no
-        - [Consume] Preparation response        Respuesta de pedido preparado
-        - [Consume] Shipment response           Respuesta de pedido enviado
-        - [Consume] Completed response          Respuesta de pedido completado
+        - [Consume] Payment response                    Respuesta de pago completado o no
+        - [Consume] Preparation response                Respuesta de pedido preparado
+        - [Consume] Shipment response                   Respuesta de pedido enviado
+        - [Consume] Completed response                  Respuesta de pedido completado
 
-Diagrama de clases del dominio de la aplicacion:
+Diagrama de clases del dominio de la aplicación:
 
 ```mermaid
 classDiagram
