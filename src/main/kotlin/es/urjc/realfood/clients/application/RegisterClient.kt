@@ -4,6 +4,8 @@ import es.urjc.realfood.clients.domain.*
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.JWTService
+import es.urjc.realfood.clients.domain.services.RegisterEvent
+import es.urjc.realfood.clients.domain.services.RegisterEventPublisher
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -15,7 +17,8 @@ class RegisterClient(
     private val clientRepository: ClientRepository,
     private val cartRepository: CartRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
-    private val jwtService: JWTService
+    private val jwtService: JWTService,
+    private val registerEventPublisher: RegisterEventPublisher
 ) {
 
     operator fun invoke(request: RegisterClientRequest): RegisterClientResponse {
@@ -41,6 +44,12 @@ class RegisterClient(
             Cart(
                 id = CartId(UUID.randomUUID().toString()),
                 client = newClient
+            )
+        )
+
+        registerEventPublisher(
+            RegisterEvent(
+                clientId = clientId
             )
         )
 

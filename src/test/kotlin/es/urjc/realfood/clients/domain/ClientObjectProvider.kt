@@ -1,5 +1,6 @@
 package es.urjc.realfood.clients.domain
 
+import es.urjc.realfood.clients.domain.services.DeleteClientEvent
 import es.urjc.realfood.clients.infrastructure.api.security.JWTGeneratorService
 import java.util.*
 
@@ -31,6 +32,8 @@ class ClientObjectProvider {
         }
 
         fun validEmailString(): String = "cristofer@cristofer.es"
+
+        fun validDeleteClientEvent(): DeleteClientEvent = DeleteClientEvent(validClientIdString())
     }
 
 }
