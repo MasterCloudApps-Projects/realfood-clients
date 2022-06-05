@@ -5,13 +5,14 @@ import es.urjc.realfood.clients.application.DeleteClientRequest
 import es.urjc.realfood.clients.application.DeleteClientTest
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClient
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validDeleteClientEvent
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.repository.ClientRepository
+import es.urjc.realfood.clients.domain.services.DeleteClientEventPublisher
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -24,14 +25,17 @@ import org.springframework.boot.test.context.SpringBootTest
 class DeleteClientUnitaryTest : DeleteClientTest() {
 
     lateinit var clientRepository: ClientRepository
+    lateinit var deleteClientEventPublisher: DeleteClientEventPublisher
     lateinit var deleteClient: DeleteClient
 
     @BeforeAll
     fun init() {
         clientRepository = mock(ClientRepository::class.java)
+        deleteClientEventPublisher = mock(DeleteClientEventPublisher::class.java)
 
         deleteClient = DeleteClient(
-            clientRepository = clientRepository
+            clientRepository = clientRepository,
+            deleteClientEventPublisher = deleteClientEventPublisher
         )
     }
 
@@ -45,6 +49,7 @@ class DeleteClientUnitaryTest : DeleteClientTest() {
         deleteClient(validDeleteClientRequest())
 
         verify(clientRepository, atLeastOnce()).delete(client)
+        verify(deleteClientEventPublisher, atLeastOnce()).invoke(validDeleteClientEvent())
     }
 
     @Test
