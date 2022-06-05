@@ -5,7 +5,9 @@ import es.urjc.realfood.clients.domain.services.RegisterEvent
 import es.urjc.realfood.clients.domain.services.RegisterEventPublisher
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.stereotype.Component
 
+@Component
 class RegisterEventRabbitPublisher(
     private val rabbitTemplate: RabbitTemplate
 ) : RegisterEventPublisher {

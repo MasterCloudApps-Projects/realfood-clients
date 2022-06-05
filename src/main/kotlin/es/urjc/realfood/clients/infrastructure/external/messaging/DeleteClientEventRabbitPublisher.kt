@@ -5,7 +5,9 @@ import es.urjc.realfood.clients.domain.services.DeleteClientEvent
 import es.urjc.realfood.clients.domain.services.DeleteClientEventPublisher
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.stereotype.Component
 
+@Component
 class DeleteClientEventRabbitPublisher(
     private val rabbitTemplate: RabbitTemplate
 ) : DeleteClientEventPublisher {
