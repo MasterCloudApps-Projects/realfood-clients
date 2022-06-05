@@ -1,7 +1,6 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.ClientId
-import es.urjc.realfood.clients.domain.Order
 import es.urjc.realfood.clients.domain.OrderId
 import es.urjc.realfood.clients.domain.Status
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
@@ -15,7 +14,7 @@ class UpdateOrderStatus(
     private val orderRepository: OrderRepository
 ) {
 
-    operator fun invoke(request: UpdateOrderStatusRequest): Order {
+    operator fun invoke(request: UpdateOrderStatusRequest): UpdateOrderStatusResponse {
         val clientId = ClientId(request.clientId)
         val orderId = OrderId(request.orderId)
 
@@ -26,7 +25,10 @@ class UpdateOrderStatus(
 
         orderRepository.save(order)
 
-        return order
+        return UpdateOrderStatusResponse(
+            orderId = request.orderId,
+            status = order.status.toString()
+        )
     }
 
 }
@@ -35,4 +37,9 @@ data class UpdateOrderStatusRequest(
     val clientId: String,
     val orderId: String,
     val status: Status
+)
+
+data class UpdateOrderStatusResponse(
+    val orderId: String,
+    val status: String
 )
