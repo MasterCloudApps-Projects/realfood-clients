@@ -2,7 +2,7 @@ version: "3"
 services:
   clients:
     container_name: realfoodclients
-    image: cloudappsteam/es.urjc.realfood.clients:0.14.0
+    image: cloudappsteam/es.urjc.realfood.clients:0.15.0
     environment:
       - DATABASE_HOST=sqldbclients
       - DATABASE_PORT=5432

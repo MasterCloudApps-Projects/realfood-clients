@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.infrastructure.external.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import es.urjc.realfood.clients.domain.services.DeleteClientEvent
 import es.urjc.realfood.clients.domain.services.DeleteClientEventPublisher
 import org.slf4j.LoggerFactory
@@ -15,6 +16,7 @@ class DeleteClientEventRabbitPublisher(
     private val logger = LoggerFactory.getLogger(DeleteClientEventRabbitPublisher::class.java)
 
     private val objectMapper: ObjectMapper = ObjectMapper()
+        .registerKotlinModule()
 
     private val queueName: String = "delete-client-queue"
 

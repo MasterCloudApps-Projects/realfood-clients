@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.infrastructure.external.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import es.urjc.realfood.clients.domain.services.ShipmentEvent
 import es.urjc.realfood.clients.domain.services.ShipmentEventPublisher
 import org.slf4j.LoggerFactory
@@ -15,9 +16,9 @@ class ShipmentEventRabbitPublisher(
     private val logger = LoggerFactory.getLogger(ShipmentEventRabbitPublisher::class.java)
 
     private val objectMapper: ObjectMapper = ObjectMapper()
+        .registerKotlinModule()
 
     private val queueName: String = "send-order"
-
     override fun invoke(shipmentEvent: ShipmentEvent) {
         val msg: String = objectMapper.writeValueAsString(shipmentEvent)
         rabbitTemplate.convertAndSend(queueName, msg)

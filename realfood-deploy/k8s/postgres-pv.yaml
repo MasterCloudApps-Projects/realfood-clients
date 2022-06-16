@@ -1,12 +1,12 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: sqldbclients-pv
+  name: realfood-clients-postgres-pv
 spec:
-  storageClassName: sqldbclients-sc
+  storageClassName: realfood-clients-postgres-sc
   accessModes:
     - ReadWriteOnce
   capacity:
     storage: 1Gi
   hostPath:
-    path: /sqldbclients-data
+    path: /realfood-clients-postgres-data
