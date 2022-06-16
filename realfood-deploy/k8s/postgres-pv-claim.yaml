@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sqldbclients-pv-claim
+  name: realfood-clients-postgres-pv-claim
   labels:
-    app: sqldbclients
+    app: realfood-clients-postgres
 spec:
-  storageClassName: "sqldbclients-sc"
+  storageClassName: "realfood-clients-postgres-sc"
   accessModes:
     - ReadWriteOnce
   resources:

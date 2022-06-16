@@ -1,6 +1,7 @@
 package es.urjc.realfood.clients.infrastructure.external.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import es.urjc.realfood.clients.domain.services.PaymentEvent
 import es.urjc.realfood.clients.domain.services.PaymentEventPublisher
 import org.slf4j.LoggerFactory
@@ -15,9 +16,9 @@ class PaymentEventRabbitPublisher(
     private val logger = LoggerFactory.getLogger(PaymentEventRabbitPublisher::class.java)
 
     private val objectMapper: ObjectMapper = ObjectMapper()
+        .registerKotlinModule()
 
     private val queueName: String = "checkout-cart"
-
     override fun invoke(paymentEvent: PaymentEvent) {
         val msg: String = objectMapper.writeValueAsString(paymentEvent)
         rabbitTemplate.convertAndSend(queueName, msg)
