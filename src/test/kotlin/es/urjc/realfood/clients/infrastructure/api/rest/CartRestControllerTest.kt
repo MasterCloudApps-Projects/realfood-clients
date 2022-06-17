@@ -7,7 +7,9 @@ import es.urjc.realfood.clients.application.DeleteItemFromCartRequest
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCartId
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validItemId
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validQuantity
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validRestaurantId
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientIdString
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validJwt
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderId
 
 
@@ -38,6 +40,7 @@ abstract class CartRestControllerTest {
         return objectMapper.writeValueAsString(
             AddItemToCartRequest(
                 itemId = validItemId(),
+                restaurantId = validRestaurantId(),
                 quantity = validQuantity()
             )
         )
@@ -47,6 +50,7 @@ abstract class CartRestControllerTest {
         return AddItemToCartRequest(
             clientId = validClientIdString(),
             itemId = validItemId(),
+            restaurantId = validRestaurantId(),
             quantity = validQuantity()
         )
     }
@@ -54,6 +58,7 @@ abstract class CartRestControllerTest {
     protected fun validAddItemToCartResponse(): AddItemToCartResponse {
         return AddItemToCartResponse(
             itemId = validItemId(),
+            restaurantId = validRestaurantId(),
             quantity = validQuantity()
         )
     }
@@ -79,7 +84,8 @@ abstract class CartRestControllerTest {
 
     protected fun validCheckoutCartRequest(): CheckoutCartRequest {
         return CheckoutCartRequest(
-            clientId = validClientIdString()
+            clientId = validClientIdString(),
+            token = validJwt()
         )
     }
 

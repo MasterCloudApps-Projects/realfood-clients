@@ -12,6 +12,8 @@ class CartObjectProvider {
 
         fun validItemId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a00"
 
+        fun validRestaurantId(): String = "89a135b8-98dc-4e57-a22f-b5f99c6b1a10"
+
         fun validQuantity(): Int = 5
 
         fun zeroQuantity(): Int = 0
@@ -35,14 +37,15 @@ class CartObjectProvider {
         fun validCartItem(): CartItem {
             return CartItem(
                 itemId = validItemId(),
+                restaurantId = validRestaurantId(),
                 quantity = validQuantity()
             )
         }
 
         fun validCartItemDto(): es.urjc.realfood.clients.domain.services.CartItemDto {
             return es.urjc.realfood.clients.domain.services.CartItemDto(
-                item = validItemId(),
-                quantity = validQuantity()
+                itemId = validItemId(),
+                qty = validQuantity()
             )
         }
 

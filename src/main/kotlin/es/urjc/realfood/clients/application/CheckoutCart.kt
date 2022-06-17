@@ -5,7 +5,6 @@ import es.urjc.realfood.clients.domain.Order
 import es.urjc.realfood.clients.domain.OrderId
 import es.urjc.realfood.clients.domain.Status
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
-import es.urjc.realfood.clients.domain.exception.ProductException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.OrderRepository
 import es.urjc.realfood.clients.domain.services.*
@@ -34,20 +33,22 @@ class CheckoutCart(
         if (cart.items.isEmpty())
             throw IllegalArgumentException("Empty cart!")
 
+        if (cart.items.values.map { item -> item.restaurantId }.toSet().size != 1)
+            if (cart.items.isEmpty())
+                throw IllegalArgumentException("Cannot request multiple restaurants order!")
+
         val response = checkoutCartService(
             CheckoutServiceRequest(
                 clientId = clientId.toString(),
+                restaurantId = cart.items.values.first().restaurantId,
                 items = cart.items.map { item ->
                     CartItemDto(
-                        item = item.value.itemId,
-                        quantity = item.value.quantity
+                        itemId = item.value.itemId,
+                        qty = item.value.quantity
                     )
                 }
-            )
+            ), request.token
         )
-
-        if (response.statusCode != 200)
-            throw ProductException("Error from Restaurants API")
 
         logger.info("All products available in new order for client with id: {}", clientId.toString())
 
@@ -55,7 +56,7 @@ class CheckoutCart(
             id = OrderId(response.orderId!!),
             status = Status.PENDING,
             client = cart.client,
-            price = response.price!!
+            price = response.total!!
         )
 
         orderRepository.save(order)
@@ -82,7 +83,8 @@ class CheckoutCart(
 }
 
 data class CheckoutCartRequest(
-    val clientId: String
+    val clientId: String,
+    val token: String
 )
 
 data class CheckoutCartResponse(

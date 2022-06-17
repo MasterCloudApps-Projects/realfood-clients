@@ -35,6 +35,7 @@ interface CartRestApi {
 
 data class AddItemToCartRequest(
     val itemId: String,
+    val restaurantId: String,
     val quantity: Int
 )
 

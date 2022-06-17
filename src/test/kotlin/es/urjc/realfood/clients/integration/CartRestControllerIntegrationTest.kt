@@ -245,6 +245,9 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
             .thenReturn(validClientIdString())
 
+        `when`(jwtValidatorService.getJwtFromHeaders(anyMap()))
+            .thenReturn(validJwt())
+
         `when`(checkoutCart(validCheckoutCartRequest()))
             .thenReturn(validCheckoutCartResponse())
 
@@ -266,6 +269,9 @@ class CartRestControllerIntegrationTest : CartRestControllerTest() {
     fun `given checkout cart endpoint when nonexistent user then return 404 status code`() {
         `when`(jwtValidatorService.getSubjectFromHeaders(anyMap()))
             .thenReturn(validClientIdString())
+
+        `when`(jwtValidatorService.getJwtFromHeaders(anyMap()))
+            .thenReturn(validJwt())
 
         `when`(checkoutCart(validCheckoutCartRequest()))
             .thenThrow(EntityNotFoundException("NOT FOUND"))
