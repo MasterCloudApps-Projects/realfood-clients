@@ -17,7 +17,7 @@ class JWTValidatorService(
         return getSubjectFromClaims(claims)
     }
 
-    private fun getJwtFromHeaders(headers: Map<String, String>): String {
+    fun getJwtFromHeaders(headers: Map<String, String>): String {
         val authHeaders = headers[HEADER_AUTHORIZATION_KEY.lowercase()]!!
         return authHeaders.substring(
             TOKEN_BEARER_PREFIX.length,

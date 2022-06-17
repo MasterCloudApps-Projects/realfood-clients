@@ -10,7 +10,7 @@
     </parent>
     <groupId>es.urjc.realfood</groupId>
     <artifactId>clients</artifactId>
-    <version>0.15.0</version>
+    <version>1.0.0</version>
     <name>realfood-clients</name>
     <description>realfood-clients</description>
     <properties>
@@ -124,6 +124,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.10.0</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

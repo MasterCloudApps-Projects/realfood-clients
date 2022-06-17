@@ -5,7 +5,6 @@ import es.urjc.realfood.clients.application.DeleteItemFromCartTest
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
 import es.urjc.realfood.clients.domain.repository.CartRepository
-import es.urjc.realfood.clients.domain.services.FindByIdProductService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -15,8 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest(
     classes = [
-        CartRepository::class,
-        FindByIdProductService::class
+        CartRepository::class
     ]
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

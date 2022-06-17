@@ -6,6 +6,7 @@ import javax.persistence.Embeddable
 @Embeddable
 data class CartItem(
     val itemId: String,
+    val restaurantId: String,
     val quantity: Int
 ) {
 

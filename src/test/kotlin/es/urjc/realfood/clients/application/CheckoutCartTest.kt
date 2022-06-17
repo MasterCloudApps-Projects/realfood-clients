@@ -1,7 +1,9 @@
 package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCartItemDto
+import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validRestaurantId
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validJwt
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderId
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validPrice
 import es.urjc.realfood.clients.domain.services.CheckoutServiceRequest
@@ -11,36 +13,30 @@ abstract class CheckoutCartTest {
 
     protected fun validCheckoutCartRequest(): CheckoutCartRequest {
         return CheckoutCartRequest(
-            clientId = validClientId().toString()
+            clientId = validClientId().toString(),
+            token = validJwt()
         )
     }
 
     protected fun invalidCheckoutCartRequest(): CheckoutCartRequest {
         return CheckoutCartRequest(
-            clientId = "INVALID"
+            clientId = "INVALID",
+            token = validJwt()
         )
     }
 
     protected fun validCheckoutServiceRequest(): CheckoutServiceRequest {
         return CheckoutServiceRequest(
             clientId = validClientId().toString(),
+            restaurantId = validRestaurantId(),
             items = listOf(validCartItemDto())
         )
     }
 
     protected fun validCheckoutServiceResponse(): CheckoutServiceResponse {
         return CheckoutServiceResponse(
-            statusCode = 200,
             orderId = validOrderId().toString(),
-            price = validPrice()
-        )
-    }
-
-    protected fun invalidCheckoutServiceResponse(): CheckoutServiceResponse {
-        return CheckoutServiceResponse(
-            statusCode = 400,
-            orderId = null,
-            price = null
+            total = validPrice()
         )
     }
 

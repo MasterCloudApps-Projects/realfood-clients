@@ -35,6 +35,7 @@ class CartRestController(
             AddItemToCartRequest(
                 clientId = subject,
                 itemId = addItemToCartRequest.itemId,
+                restaurantId = addItemToCartRequest.restaurantId,
                 quantity = addItemToCartRequest.quantity
             )
         )
@@ -55,7 +56,8 @@ class CartRestController(
 
     override fun checkoutCart(headers: Map<String, String>): CheckoutCartResponse {
         val subject = jwtValidatorService.getSubjectFromHeaders(headers)
-        return checkoutCart(CheckoutCartRequest(subject))
+        val token = jwtValidatorService.getJwtFromHeaders(headers)
+        return checkoutCart(CheckoutCartRequest(subject, token))
     }
 
 }

@@ -44,6 +44,7 @@ class DatabaseInitializer(
 
         val cartItem = CartItem(
             itemId = UUID.nameUUIDFromBytes("hamburguesa".toByteArray()).toString(),
+            restaurantId = UUID.nameUUIDFromBytes("restaurante".toByteArray()).toString(),
             quantity = 2
         )
 

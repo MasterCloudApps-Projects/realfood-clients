@@ -6,12 +6,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class RetrofitConfig {
 
-    @Value("\${login.client.host}")
+    @Value("\${restaurant.host}")
     private lateinit var host: String
 
-    @Value("\${login.client.port}")
+    @Value("\${restaurant.port}")
     private lateinit var port: String
 
-    private fun getUrl(): String = "https://${host}:${port}/register"
+    fun checkoutEndpoint(): String = "https://${host}:${port}/api/orders"
 
 }

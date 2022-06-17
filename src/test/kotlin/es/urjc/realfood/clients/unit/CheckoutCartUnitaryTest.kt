@@ -5,11 +5,11 @@ import es.urjc.realfood.clients.application.CheckoutCartTest
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.emptyCart
 import es.urjc.realfood.clients.domain.CartObjectProvider.Companion.validCart
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
+import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validJwt
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrder
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validOrderId
 import es.urjc.realfood.clients.domain.OrderObjectProvider.Companion.validPaymentEvent
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
-import es.urjc.realfood.clients.domain.exception.ProductException
 import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.OrderRepository
 import es.urjc.realfood.clients.domain.services.CheckoutCartService
@@ -55,7 +55,7 @@ class CheckoutCartUnitaryTest : CheckoutCartTest() {
         `when`(cartRepository.findByClientId(validClientId()))
             .thenReturn(validCart())
 
-        `when`(checkoutCartService(validCheckoutServiceRequest()))
+        `when`(checkoutCartService(validCheckoutServiceRequest(), validJwt()))
             .thenReturn(validCheckoutServiceResponse())
 
         val response = checkoutCart(validCheckoutCartRequest())
@@ -63,21 +63,6 @@ class CheckoutCartUnitaryTest : CheckoutCartTest() {
         verify(orderRepository, atLeastOnce()).save(validOrder())
         verify(paymentEventPublisher, atLeastOnce()).invoke(validPaymentEvent())
         assertEquals(validOrderId().toString(), response.orderId)
-    }
-
-    @Test
-    fun `given valid request and error status from external checkout when checkout user cart then return product exception`() {
-        `when`(cartRepository.findByClientId(validClientId()))
-            .thenReturn(validCart())
-
-        `when`(checkoutCartService(validCheckoutServiceRequest()))
-            .thenReturn(invalidCheckoutServiceResponse())
-
-        val exc = assertThrows(ProductException::class.java) {
-            checkoutCart(validCheckoutCartRequest())
-        }
-
-        assertEquals("Error from Restaurants API", exc.message)
     }
 
     @Test
