@@ -27,9 +27,8 @@ abstract class CheckoutCartTest {
 
     protected fun validCheckoutServiceRequest(): CheckoutServiceRequest {
         return CheckoutServiceRequest(
-            clientId = validClientId().toString(),
             restaurantId = validRestaurantId(),
-            items = listOf(validCartItemDto())
+            lines = listOf(validCartItemDto())
         )
     }
 

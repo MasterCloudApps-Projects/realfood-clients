@@ -39,9 +39,8 @@ class CheckoutCart(
 
         val response = checkoutCartService(
             CheckoutServiceRequest(
-                clientId = clientId.toString(),
                 restaurantId = cart.items.values.first().restaurantId,
-                items = cart.items.map { item ->
+                lines = cart.items.map { item ->
                     CartItemDto(
                         itemId = item.value.itemId,
                         qty = item.value.quantity
