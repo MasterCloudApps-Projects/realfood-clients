@@ -15,4 +15,6 @@ class PostgresCartRepository(private val jpaRepository: CartJpaRepository) : Car
 
     override fun findByClientId(id: ClientId): Cart = jpaRepository.findByClientId(id).orElse(null)
 
+    override fun deleteByClientId(id: ClientId) = jpaRepository.deleteByClient_Id(id)
+
 }

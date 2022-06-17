@@ -2,6 +2,7 @@ package es.urjc.realfood.clients.application
 
 import es.urjc.realfood.clients.domain.ClientId
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
+import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.DeleteClientEvent
 import es.urjc.realfood.clients.domain.services.DeleteClientEventPublisher
@@ -12,6 +13,7 @@ import javax.transaction.Transactional
 @Transactional
 class DeleteClient(
     private val clientRepository: ClientRepository,
+    private val cartRepository: CartRepository,
     private val deleteClientEventPublisher: DeleteClientEventPublisher
 ) {
 
@@ -19,6 +21,9 @@ class DeleteClient(
         val clientId = ClientId(request.id)
         val client = clientRepository
             .findById(clientId) ?: throw EntityNotFoundException("Client not found")
+
+        cartRepository.deleteByClientId(clientId)
+
         clientRepository.delete(client)
         deleteClientEventPublisher(
             DeleteClientEvent(

@@ -12,4 +12,6 @@ interface CartRepository {
 
     fun findByClientId(id: ClientId): Cart?
 
+    fun deleteByClientId(id: ClientId)
+
 }

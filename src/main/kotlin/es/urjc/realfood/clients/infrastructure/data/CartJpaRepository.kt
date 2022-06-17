@@ -12,4 +12,6 @@ interface CartJpaRepository : JpaRepository<Cart, CartId> {
 
     fun findByClientId(id: ClientId): Optional<Cart>
 
+    fun deleteByClient_Id(id: ClientId)
+
 }

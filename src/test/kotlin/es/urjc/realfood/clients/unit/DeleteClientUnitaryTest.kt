@@ -7,6 +7,7 @@ import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClien
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validClientId
 import es.urjc.realfood.clients.domain.ClientObjectProvider.Companion.validDeleteClientEvent
 import es.urjc.realfood.clients.domain.exception.EntityNotFoundException
+import es.urjc.realfood.clients.domain.repository.CartRepository
 import es.urjc.realfood.clients.domain.repository.ClientRepository
 import es.urjc.realfood.clients.domain.services.DeleteClientEventPublisher
 import org.junit.jupiter.api.Assertions.*
@@ -18,23 +19,27 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest(
     classes = [
-        ClientRepository::class
+        ClientRepository::class,
+        CartRepository::class
     ]
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DeleteClientUnitaryTest : DeleteClientTest() {
 
     lateinit var clientRepository: ClientRepository
+    lateinit var cartRepository: CartRepository
     lateinit var deleteClientEventPublisher: DeleteClientEventPublisher
     lateinit var deleteClient: DeleteClient
 
     @BeforeAll
     fun init() {
         clientRepository = mock(ClientRepository::class.java)
+        cartRepository = mock(CartRepository::class.java)
         deleteClientEventPublisher = mock(DeleteClientEventPublisher::class.java)
 
         deleteClient = DeleteClient(
             clientRepository = clientRepository,
+            cartRepository = cartRepository,
             deleteClientEventPublisher = deleteClientEventPublisher
         )
     }
