@@ -12,12 +12,15 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
 class CheckoutService(
     private val retrofitConfig: RetrofitConfig
 ) : CheckoutCartService {
+
+    private val logger = LoggerFactory.getLogger(CheckoutCartService::class.java)
 
     private val objectMapper = ObjectMapper()
         .findAndRegisterModules()
@@ -35,8 +38,10 @@ class CheckoutService(
             .build()
         val response: Response = client.newCall(request).execute()
 
-        if (response.code != 200)
+        if (response.code != 200) {
+            logger.error(response.message)
             throw ProductException("Error from Restaurants API")
+        }
 
         return objectMapper.readValue(response.body!!.charStream(), CheckoutServiceResponse::class.java)
     }
