@@ -53,7 +53,7 @@ class CheckoutCart(
         logger.info("All products available in new order for client with id: {}", clientId.toString())
 
         val order = Order(
-            id = OrderId(response.orderId!!),
+            id = OrderId(response.orderId),
             status = Status.PENDING,
             client = cart.client,
             price = response.total!!
