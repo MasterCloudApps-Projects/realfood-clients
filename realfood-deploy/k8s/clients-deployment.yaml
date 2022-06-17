@@ -26,7 +26,11 @@ spec:
           value: "5672"
         - name: JWT_SECRET
           value: "a2ffb28f-23ec-4939-b2b3-c966de6a751d"
-        image: cloudappsteam/es.urjc.realfood.clients:1.1.0
+        - name: RESTAURANT_HOST
+          value: "realfood-restaurants-service"
+        - name: RESTAURANT_PORT
+          value: "8081"
+        image: cloudappsteam/es.urjc.realfood.clients:1.1.1
         imagePullPolicy: IfNotPresent
         name: "realfood-clients"
         ports:

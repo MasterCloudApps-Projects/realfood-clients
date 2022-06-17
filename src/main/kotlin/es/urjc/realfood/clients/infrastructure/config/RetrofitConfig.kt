@@ -12,6 +12,6 @@ class RetrofitConfig {
     @Value("\${restaurant.port}")
     private lateinit var port: String
 
-    fun checkoutEndpoint(): String = "https://${host}:${port}/api/orders"
+    fun checkoutEndpoint(): String = "http://${host}:${port}/api/orders"
 
 }
