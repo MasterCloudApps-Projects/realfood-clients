@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component
 
 @Component
 class ShipmentEventRabbitConsumer(
-    private val updateOrderStatus: UpdateOrderStatus
+    private val updateOrderStatus: UpdateOrderStatus,
 ) {
 
     private val logger = LoggerFactory.getLogger(ShipmentEventRabbitConsumer::class.java)
 
     private val objectMapper = ObjectMapper()
         .registerKotlinModule()
+
     @RabbitListener(queues = ["sent-orders"], ackMode = "AUTO")
     private fun consume(message: String) {
         val sentEvent = objectMapper.readValue(message, SentEvent::class.java)
@@ -25,12 +26,12 @@ class ShipmentEventRabbitConsumer(
             UpdateOrderStatusRequest(
                 clientId = sentEvent.clientId,
                 orderId = sentEvent.orderId,
-                status = Status.IN_DELIVERY
+                status = if (sentEvent.status == "IN_ROUTE") Status.IN_DELIVERY else Status.COMPLETED
             )
         )
 
         logger.info(
-            "[Consumed] sent order '{}' to client '{}'",
+            "[Consumed] Updated sent order '{}' to client '{}'",
             sentEvent.orderId,
             sentEvent.clientId
         )
@@ -40,5 +41,6 @@ class ShipmentEventRabbitConsumer(
 
 data class SentEvent(
     val clientId: String,
-    val orderId: String
+    val orderId: String,
+    val status: String,
 )

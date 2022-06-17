@@ -28,6 +28,16 @@ class RealfoodClientsApplication {
         return Queue("completed-orders")
     }
 
+    @Bean
+    fun checkoutCarts(): Queue {
+        return Queue("checkout-cart")
+    }
+
+    @Bean
+    fun sendOrderQueue(): Queue {
+        return Queue("send-order")
+    }
+
 }
 
 fun main(args: Array<String>) {

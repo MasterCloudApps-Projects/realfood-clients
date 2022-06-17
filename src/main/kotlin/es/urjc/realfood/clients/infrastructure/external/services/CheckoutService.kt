@@ -39,7 +39,7 @@ class CheckoutService(
         val response: Response = client.newCall(request).execute()
 
         if (response.code != 200) {
-            logger.error(response.message)
+            logger.error(response.body?.string())
             throw ProductException("Error from Restaurants API")
         }
 
