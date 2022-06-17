@@ -10,22 +10,22 @@ class RealfoodClientsApplication {
 
     @Bean
     fun payments(): Queue {
-        return Queue("payments", false)
+        return Queue("payments")
     }
 
     @Bean
     fun preparedOrders(): Queue {
-        return Queue("prepared-orders", false)
+        return Queue("prepared-orders")
     }
 
     @Bean
     fun sentOrders(): Queue {
-        return Queue("sent-orders", false)
+        return Queue("sent-orders")
     }
 
     @Bean
     fun completedOrders(): Queue {
-        return Queue("completed-orders", false)
+        return Queue("completed-orders")
     }
 
 }
