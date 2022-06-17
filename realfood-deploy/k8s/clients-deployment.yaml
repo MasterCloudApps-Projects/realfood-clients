@@ -30,7 +30,7 @@ spec:
           value: "realfood-restaurants-service"
         - name: RESTAURANT_PORT
           value: "8081"
-        image: cloudappsteam/es.urjc.realfood.clients:1.1.1
+        image: cloudappsteam/es.urjc.realfood.clients:1.1.2
         imagePullPolicy: IfNotPresent
         name: "realfood-clients"
         ports:
